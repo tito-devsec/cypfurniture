@@ -1,0 +1,29 @@
+{
+  "name": "cypfurniture",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CYP Furniture - storefront (Next.js + GSAP) and API (Node.js + Prisma)",
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "dev": "concurrently -n api,web -c green,cyan \"npm run dev -w server\" \"npm run dev -w web\"",
+    "dev:server": "npm run dev -w server",
+    "dev:web": "npm run dev -w web",
+    "build": "npm run build -w web",
+    "start": "concurrently -n api,web -c green,cyan \"npm run start -w server\" \"npm run start -w web\"",
+    "setup": "npm run setup -w server",
+    "db:seed": "npm run db:seed -w server",
+    "db:reset": "npm run db:reset -w server",
+    "db:studio": "npm run db:studio -w server",
+    "lint": "npm run lint -w web",
+    "typecheck": "npm run typecheck -w server && npx tsc --noEmit -p web/tsconfig.json"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.0"
+  },
+  "engines": {
+    "node": ">=22.12"
+  }
+}

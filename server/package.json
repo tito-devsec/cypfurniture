@@ -1,0 +1,46 @@
+{
+  "name": "cypfurniture-server",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CYP Furniture API - Node.js (Express 5) + Prisma (SQLite / PostgreSQL)",
+  "type": "module",
+  "main": "src/index.ts",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "node --watch --watch-path=./src src/index.ts",
+    "start": "node src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "node prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "db:reset": "prisma db push --force-reset && node prisma/seed.ts",
+    "setup": "prisma generate && prisma db push && node prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.1",
+    "multer": "^2.0.2",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/morgan": "^1.9.10",
+    "@types/multer": "^2.0.0",
+    "@types/node": "^24.0.0",
+    "prisma": "^6.19.0",
+    "typescript": "^5.9.0"
+  }
+}

@@ -1,0 +1,29 @@
+# dependencies
+node_modules
+
+# builds
+.next
+out
+dist
+*.tsbuildinfo
+next-env.d.ts
+
+# env
+.env
+.env.local
+.env.*.local
+
+# database (SQLite)
+*.db
+*.db-journal
+
+# uploads (keep the folder, ignore the content)
+server/uploads/*
+!server/uploads/.gitkeep
+
+# misc
+.eslintcache
+.DS_Store
+Thumbs.db
+*.log
+.claude/launch.json

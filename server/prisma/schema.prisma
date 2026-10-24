@@ -1,0 +1,183 @@
+// ------------------------------------------------------------------
+// CYP Furniture - database schema
+//
+// Default: SQLite (zero setup). To use PostgreSQL:
+//   1. change  provider = "sqlite"  ->  provider = "postgresql"
+//   2. set DATABASE_URL in server/.env to your Postgres connection string
+//   3. run  npm run db:push -w server   (or: npm run db:migrate -w server)
+// ------------------------------------------------------------------
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  name         String   @default("Administrator")
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// Single-row table. `data` holds the whole site configuration as JSON
+/// (brand, contact, social links, hero slides, homepage sections, footer, SEO ...).
+model SiteSettings {
+  id        Int      @id @default(1)
+  data      String   @default("{}")
+  updatedAt DateTime @updatedAt
+}
+
+model Category {
+  id          Int        @id @default(autoincrement())
+  name        String
+  slug        String     @unique
+  description String     @default("")
+  imageUrl    String     @default("")
+  sortOrder   Int        @default(0)
+  isActive    Boolean    @default(true)
+  showInMenu  Boolean    @default(true)
+  parentId    Int?
+  parent      Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children    Category[] @relation("CategoryTree")
+  products    Product[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
+
+model Product {
+  id               Int            @id @default(autoincrement())
+  name             String
+  slug             String         @unique
+  sku              String         @default("")
+  shortDescription String         @default("")
+  description      String         @default("")
+  price            Float
+  compareAtPrice   Float?
+  categoryId       Int?
+  category         Category?      @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  images           ProductImage[]
+  materials        String         @default("")
+  dimensions       String         @default("")
+  /// JSON array: [{ "name": "Oak", "hex": "#c8a165" }]
+  colors           String         @default("[]")
+  /// JSON array: [{ "name": "Size", "values": ["2 Seater", "3 Seater"] }]
+  options          String         @default("[]")
+  /// JSON array: [{ "label": "Weight", "value": "42 kg" }]
+  specs            String         @default("[]")
+  tags             String         @default("")
+  stock            Int            @default(10)
+  isFeatured       Boolean        @default(false)
+  isNew            Boolean        @default(false)
+  isBestSeller     Boolean        @default(false)
+  isActive         Boolean        @default(true)
+  viewCount        Int            @default(0)
+  orderItems       OrderItem[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([categoryId])
+  @@index([isActive, isFeatured])
+}
+
+model ProductImage {
+  id        Int     @id @default(autoincrement())
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String
+  alt       String  @default("")
+  sortOrder Int     @default(0)
+
+  @@index([productId])
+}
+
+model BlogPost {
+  id          Int       @id @default(autoincrement())
+  title       String
+  slug        String    @unique
+  excerpt     String    @default("")
+  /// Markdown content
+  content     String    @default("")
+  coverImage  String    @default("")
+  author      String    @default("")
+  tags        String    @default("")
+  readingTime Int       @default(3)
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+/// Free-form pages (FAQ, shipping policy, terms ...) rendered at /p/[slug]
+model Page {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  /// Markdown content
+  content     String   @default("")
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Order {
+  id            Int         @id @default(autoincrement())
+  orderNumber   String      @unique
+  customerName  String
+  email         String
+  phone         String
+  address       String
+  city          String
+  country       String
+  postalCode    String      @default("")
+  notes         String      @default("")
+  /// pending | confirmed | processing | shipped | delivered | cancelled
+  status        String      @default("pending")
+  /// cod | bank_transfer | whatsapp
+  paymentMethod String      @default("cod")
+  subtotal      Float
+  shipping      Float       @default(0)
+  total         Float
+  currency      String      @default("USD")
+  items         OrderItem[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([status])
+}
+
+model OrderItem {
+  id          Int      @id @default(autoincrement())
+  orderId     Int
+  order       Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId   Int?
+  product     Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productName String
+  imageUrl    String   @default("")
+  unitPrice   Float
+  quantity    Int
+  /// JSON object of chosen options, e.g. {"Color":"Oak","Size":"3 Seater"}
+  options     String   @default("{}")
+}
+
+model ContactMessage {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String
+  phone     String   @default("")
+  subject   String   @default("")
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model NewsletterSubscriber {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  createdAt DateTime @default(now())
+}
