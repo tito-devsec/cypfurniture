@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Copy, Pencil, Plus, Search, Trash2 } from 'lucide-react';
 import { adminApi } from '@/lib/admin-api';
 import type { Category, Paginated, Product } from '@/lib/types';
@@ -11,14 +12,22 @@ import { useSiteSettings } from '@/components/admin/use-settings';
 import { useToast } from '@/components/admin/toast';
 import { AdminButton, ConfirmDialog, EmptyState, Input, LoadingBlock, PageHeader, PaginationControls, Select, Table } from '@/components/admin/ui';
 
-export default function AdminProductsPage() {
+function ProductsList() {
   const toast = useToast();
   const { commerce } = useSiteSettings();
-  const [q, setQ] = useState('');
+  const sp = useSearchParams();
+  const urlQ = sp.get('q') ?? '';
+  const [q, setQ] = useState(urlQ);
+  // Follow the header search box (state derived from the url)
+  const [lastUrlQ, setLastUrlQ] = useState(urlQ);
+  if (lastUrlQ !== urlQ) {
+    setLastUrlQ(urlQ);
+    setQ(urlQ);
+  }
   const [debounced, setDebounced] = useState('');
   const [category, setCategory] = useState('');
   const [status, setStatus] = useState('');
-  const [sort, setSort] = useState('newest');
+  const [sort, setSort] = useState(sp.get('sort') || 'newest');
   const [page, setPage] = useState(1);
   const [deleting, setDeleting] = useState<Product | null>(null);
   const [busy, setBusy] = useState(false);
@@ -187,5 +196,13 @@ export default function AdminProductsPage() {
       {data && <PaginationControls page={data.page} pages={data.pages} total={data.total} onChange={setPage} />}
       <ConfirmDialog open={Boolean(deleting)} onClose={() => setDeleting(null)} onConfirm={remove} loading={busy} title={`Delete “${deleting?.name}”?`} text="The product and its images will be removed from the catalogue. Past orders keep their line items." />
     </div>
+  );
+}
+
+export default function AdminProductsPage() {
+  return (
+    <Suspense>
+      <ProductsList />
+    </Suspense>
   );
 }

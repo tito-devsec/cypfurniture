@@ -6,6 +6,26 @@ import { getSettings } from '../lib/settings.ts';
 
 export const statsRouter = express.Router();
 
+/** Lightweight numbers + latest activity for the admin sidebar / top bar. */
+statsRouter.get('/summary', requireAdmin, async (_req, res) => {
+  const [orders, pendingOrders, unreadMessages, recentOrders, recentMessages] = await Promise.all([
+    prisma.order.count(),
+    prisma.order.count({ where: { status: 'pending' } }),
+    prisma.contactMessage.count({ where: { isRead: false } }),
+    prisma.order.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 4,
+      select: { id: true, orderNumber: true, customerName: true, total: true, status: true, createdAt: true },
+    }),
+    prisma.contactMessage.findMany({
+      orderBy: { createdAt: 'desc' },
+      take: 3,
+      select: { id: true, name: true, subject: true, isRead: true, createdAt: true },
+    }),
+  ]);
+  res.json({ orders, pendingOrders, unreadMessages, recentOrders, recentMessages });
+});
+
 statsRouter.get('/', requireAdmin, async (_req, res) => {
   const since = new Date();
   since.setDate(since.getDate() - 30);
@@ -28,6 +48,7 @@ statsRouter.get('/', requireAdmin, async (_req, res) => {
     topProducts,
     ordersByStatus,
     recentWindow,
+    recentMessages,
   ] = await Promise.all([
     prisma.product.count(),
     prisma.product.count({ where: { isActive: true } }),
@@ -54,6 +75,7 @@ statsRouter.get('/', requireAdmin, async (_req, res) => {
     }),
     prisma.order.groupBy({ by: ['status'], _count: { _all: true } }),
     prisma.order.findMany({ where: { createdAt: { gte: since }, status: { not: 'cancelled' } }, select: { createdAt: true, total: true } }),
+    prisma.contactMessage.findMany({ orderBy: { createdAt: 'desc' }, take: 6 }),
   ]);
 
   // Daily sales for the last 30 days (filled with zeros)
@@ -94,6 +116,7 @@ statsRouter.get('/', requireAdmin, async (_req, res) => {
     })),
     lowStock,
     topProducts,
+    recentMessages,
     sales: days,
     currency: settings.commerce,
   });

@@ -280,6 +280,16 @@ export type Stats = {
   recentOrders: Order[];
   lowStock: { id: number; name: string; slug: string; stock: number; images: ProductImage[] }[];
   topProducts: { id: number; name: string; slug: string; viewCount: number; price: number; images: ProductImage[] }[];
+  recentMessages: ContactMessage[];
   sales: { date: string; orders: number; revenue: number }[];
   currency: CommerceSettings;
+};
+
+/** GET /api/stats/summary - numbers and latest activity for the admin shell */
+export type StatsSummary = {
+  orders: number;
+  pendingOrders: number;
+  unreadMessages: number;
+  recentOrders: Pick<Order, 'id' | 'orderNumber' | 'customerName' | 'total' | 'status' | 'createdAt'>[];
+  recentMessages: Pick<ContactMessage, 'id' | 'name' | 'subject' | 'isRead' | 'createdAt'>[];
 };
