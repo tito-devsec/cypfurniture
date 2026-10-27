@@ -12,7 +12,7 @@ export function Testimonials({ title, subtitle, items }: { title: string; subtit
         <Reveal stagger={0.12} className="grid gap-5 md:grid-cols-3">
           {items.map((t, i) => (
             <figure key={`${t.name}-${i}`} className="flex flex-col bg-white p-8 md:p-10">
-              <div className="flex gap-1 text-accent" aria-label={`${t.rating} out of 5 stars`}>
+              <div className="flex gap-1 text-accent-2" aria-label={`${t.rating} out of 5 stars`}>
                 {Array.from({ length: 5 }).map((_, s) => (
                   <Star key={s} size={14} className={s < t.rating ? 'fill-current' : 'text-line-strong'} strokeWidth={1.5} />
                 ))}

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getProduct } from '@/lib/api';
+import { getProduct, getSettings } from '@/lib/api';
 import { resolveImage } from '@/lib/utils';
 import { Breadcrumbs, type Crumb } from '@/components/ui/breadcrumbs';
 import { Accordion } from '@/components/ui/collapsible';
@@ -78,8 +78,26 @@ export default async function ProductPage({ params }: Props) {
     },
   ].filter(Boolean) as { id: string; title: string; content: React.ReactNode }[];
 
+  const settings = await getSettings();
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.shortDescription || undefined,
+    sku: product.sku || undefined,
+    image: product.images.map((i) => resolveImage(i.url)),
+    brand: { '@type': 'Brand', name: settings.brand.siteName },
+    category: product.category?.name,
+    url: `${siteUrl}/products/${product.slug}`,
+    ...(product.price > 0
+      ? { offers: { '@type': 'Offer', price: product.price, priceCurrency: settings.commerce.currencyCode, availability: 'https://schema.org/InStock', url: `${siteUrl}/products/${product.slug}` } }
+      : {}),
+  };
+
   return (
     <div className="container-x py-8 lg:py-12">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Breadcrumbs items={crumbs} />
 
       <div className="mt-8 grid gap-12 lg:grid-cols-12 lg:gap-16">

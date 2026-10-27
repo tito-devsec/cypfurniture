@@ -1,13 +1,17 @@
-# CYP Furniture
+# CYP Furniture & Decor®
 
-A complete e-commerce website for **CYP Furniture** (home, office and custom furniture) with a public storefront, online ordering and a full admin panel.
+*Beyond Furniture. Designed for Living.*
+
+A complete website for **CYP FURNITURE & DECOR®** (luxury furniture, bespoke design and interior solutions, handcrafted in Tanzania) with a public storefront, online ordering and quotation requests, and a full admin panel.
 
 | Part | Stack |
 | --- | --- |
 | `web/` – storefront + admin | Next.js 16 (App Router, React 19), Tailwind CSS v4, GSAP 3 (ScrollTrigger, SplitText, ScrollTo), Zustand |
 | `server/` – API | Node.js 22+, Express 5, Prisma 6, SQLite by default (PostgreSQL ready), JWT auth, Multer uploads, Zod validation |
 
-Design: minimal, flat, Marcellus + Jost typography, inspired by homeyfad.com (mega menu, hero slider, trust badges, shop-by-room tiles, product grid, blog).
+Design: minimal, flat, Marcellus + Jost typography, inspired by homeyfad.com (mega menu, hero slider, trust badges, shop-by-room tiles, product grid, blog). Brand colours: CYP red `#EB001B` and orange `#F79E1B` as controlled accents, warm cream `#F6EFEA`, white and charcoal.
+
+> **Demo content.** The seeded products, prices, blog posts and policy pages are placeholders that show the design. Replace them with real CYP products, photos, prices and texts in the admin before launch. Products without a fixed price can be published with price `0`, which shows "Request a quote" instead of a price.
 
 ---
 
@@ -78,8 +82,20 @@ npm run db:reset
   - Home page: trust badges, section titles, showcase & bottom banners, testimonials, newsletter box.
   - About page content, footer columns & links, navigation links.
   - Orders & currency: currency code/symbol/position, delivery fee and free-delivery threshold, payment methods, bank details, checkout note, stock display.
-  - SEO: default title, description, keywords, sharing image.
+  - SEO: default title, description, keywords, sharing image, Google Analytics ID, Google Search Console verification.
 - My account: profile and password.
+
+**Logo and brand assets**
+
+The original logo lives at `web/public/logo.png` and is never modified. Derived files are generated from it with:
+
+```bash
+npm run brand:assets
+```
+
+This writes `web/public/logo-mark.png` (cropped lettermark used in the header, footer and admin), `web/src/app/icon.png` (favicon), `web/src/app/apple-icon.png` and `web/public/og-image.jpg` (image shown when the site is shared on WhatsApp, Facebook or X). To use a different logo, replace `web/public/logo.png` and run the command again, or upload a logo in Admin → Settings → Brand & theme.
+
+The site also emits structured data (schema.org `LocalBusiness` / `FurnitureStore` on every page, `Product` on product pages), canonical URLs, a sitemap and robots rules.
 
 ---
 
@@ -96,6 +112,7 @@ cypfurniture/
 │   ├── src/lib/settings.ts  # default site settings + validation (the "customise website" model)
 │   └── uploads/             # uploaded images (served at /uploads/...)
 └── web/                     # Next.js app
+    ├── public/logo.png      # original logo (brand assets are derived from it)
     ├── src/app/(site)/      # storefront routes
     ├── src/app/admin/       # admin panel routes
     ├── src/components/site  # header (mega menu), hero, product cards, cart drawer, footer ...

@@ -15,8 +15,10 @@ export function ProductCard({ product, priority = false, className }: { product:
   const commerce = useCommerce();
   const [first, second] = product.images;
   const discount = discountPercent(product.price, product.compareAtPrice);
-  const hasOptions = product.options.length > 0 || product.colors.length > 1;
-  const outOfStock = commerce.showStock && product.stock <= 0;
+  const onRequest = product.price <= 0;
+  // Products with options, colours or no fixed price are chosen on their own page
+  const hasOptions = onRequest || product.options.length > 0 || product.colors.length > 1;
+  const outOfStock = !onRequest && commerce.showStock && product.stock <= 0;
 
   const quickAdd = () => {
     add({ productId: product.id, name: product.name, slug: product.slug, price: product.price, image: first?.url ?? '', options: {}, stock: product.stock });
@@ -45,7 +47,8 @@ export function ProductCard({ product, priority = false, className }: { product:
         <div className="absolute left-3 top-3 flex flex-col gap-1.5">
           {discount && <Badge tone="sale">-{discount}%</Badge>}
           {product.isNew && <Badge tone="ink">New</Badge>}
-          {product.isBestSeller && <Badge tone="surface">Best seller</Badge>}
+          {product.isBestSeller && <Badge tone="accent2">Best seller</Badge>}
+          {onRequest && <Badge tone="surface">Bespoke</Badge>}
           {outOfStock && <Badge tone="muted">Made to order</Badge>}
         </div>
       </Link>
@@ -61,7 +64,7 @@ export function ProductCard({ product, priority = false, className }: { product:
           <Price price={product.price} compareAtPrice={product.compareAtPrice} className="mt-1.5" />
         </div>
         {hasOptions ? (
-          <Link href={`/products/${product.slug}`} className="flex h-10 w-10 shrink-0 items-center justify-center border border-line text-ink transition-all hover:border-ink hover:bg-ink hover:text-white" aria-label={`Choose options for ${product.name}`} title="Choose options">
+          <Link href={`/products/${product.slug}`} className="flex h-10 w-10 shrink-0 items-center justify-center border border-line text-ink transition-all hover:border-ink hover:bg-ink hover:text-white" aria-label={onRequest ? `${commerce.quoteLabel} for ${product.name}` : `Choose options for ${product.name}`} title={onRequest ? commerce.quoteLabel : 'Choose options'}>
             <ShoppingBag size={16} strokeWidth={1.5} />
           </Link>
         ) : (

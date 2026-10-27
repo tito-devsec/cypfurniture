@@ -42,9 +42,10 @@ export default function AdminLoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-cream px-4">
       <div ref={root} className="w-full max-w-sm">
-        <div className="mb-8 text-center">
-          <span className="font-display text-3xl tracking-[0.3em]">CYP</span>
-          <p className="mt-1 text-[10px] uppercase tracking-[0.36em] text-muted">Admin panel</p>
+        <div className="mb-8 flex flex-col items-center text-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-mark.png" alt="CYP Furniture & Decor" className="h-16 w-auto" />
+          <p className="mt-3 text-[10px] uppercase tracking-[0.36em] text-muted">Admin panel</p>
         </div>
         <form onSubmit={submit} className="admin-card space-y-5 p-7">
           <Field label="Email">

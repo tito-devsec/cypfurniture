@@ -2,7 +2,7 @@ import type { SiteSettings } from './types';
 
 /** Minimal settings used only when the API cannot be reached, so the site still renders. */
 export const FALLBACK_SETTINGS: SiteSettings = {
-  brand: { siteName: 'CYP Furniture', tagline: 'Furniture for every space', logoUrl: '', logoOnDarkUrl: '', faviconUrl: '', logoText: 'CYP' },
+  brand: { siteName: 'CYP Furniture & Decor®', tagline: 'Beyond Furniture. Designed for Living.', logoUrl: '/logo-mark.png', logoOnDarkUrl: '', faviconUrl: '', logoText: 'CYP' },
   contact: {
     email: '',
     phone: '',
@@ -20,14 +20,15 @@ export const FALLBACK_SETTINGS: SiteSettings = {
   hero: { slides: [], autoplaySeconds: 6 },
   features: [],
   home: {
-    categoriesTitle: 'Shop by room',
+    categoriesTitle: 'Furniture collections',
     categoriesSubtitle: '',
-    featuredTitle: 'Featured pieces',
+    featuredTitle: 'Featured furniture',
     featuredSubtitle: '',
     newArrivalsTitle: 'New arrivals',
-    bestSellersTitle: 'Best sellers',
-    blogTitle: 'Inspiration & tips',
+    bestSellersTitle: 'Customer favourites',
+    blogTitle: 'Projects & inspiration',
     blogSubtitle: '',
+    marquee: [],
     showcase: { enabled: false, eyebrow: '', title: '', text: '', image: '', buttonText: '', buttonLink: '' },
     banner: { enabled: false, eyebrow: '', title: '', text: '', image: '', buttonText: '', buttonLink: '' },
     testimonials: { enabled: false, title: '', subtitle: '', items: [] },
@@ -47,7 +48,7 @@ export const FALLBACK_SETTINGS: SiteSettings = {
     ctaTitle: '',
     ctaText: '',
   },
-  footer: { description: '', copyright: '© {year} CYP Furniture', columns: [], bottomLinks: [] },
+  footer: { description: '', copyright: '© {year} CYP Furniture & Decor®', columns: [], bottomLinks: [] },
   navigation: {
     showShopAll: true,
     showCategories: true,
@@ -57,7 +58,7 @@ export const FALLBACK_SETTINGS: SiteSettings = {
       { label: 'Contact', href: '/contact', external: false },
     ],
   },
-  seo: { metaTitle: 'CYP Furniture', metaDescription: '', keywords: '', ogImage: '' },
+  seo: { metaTitle: 'CYP Furniture & Decor®', metaDescription: '', keywords: '', ogImage: '', googleAnalyticsId: '', googleSiteVerification: '' },
   commerce: {
     currencyCode: 'USD',
     currencySymbol: '$',
@@ -70,9 +71,10 @@ export const FALLBACK_SETTINGS: SiteSettings = {
     bankDetails: '',
     orderWhatsappEnabled: false,
     checkoutNote: '',
-    showStock: true,
+    showStock: false,
     lowStockThreshold: 3,
     minOrderQuantity: 1,
+    quoteLabel: 'Request a quote',
   },
-  theme: { accent: '#1F3D33', accentSoft: '#E7EFEA', surface: '#F6F4EF', sale: '#B23A2E' },
+  theme: { accent: '#EB001B', accentSecondary: '#F79E1B', accentSoft: '#FBE9D3', surface: '#F6EFEA', sale: '#EB001B' },
 };

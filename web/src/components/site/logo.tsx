@@ -7,7 +7,8 @@ import { cn, resolveImage } from '@/lib/utils';
 export function Logo({ onDark = false, className, size = 'md' }: { onDark?: boolean; className?: string; size?: 'sm' | 'md' | 'lg' }) {
   const { brand } = useSettings();
   const src = onDark && brand.logoOnDarkUrl ? brand.logoOnDarkUrl : brand.logoUrl;
-  const heights = { sm: 'h-8', md: 'h-10 lg:h-11', lg: 'h-14' };
+  // The CYP logo is a compact lettermark, so it is shown a little taller than a wide wordmark would be.
+  const heights = { sm: 'h-9', md: 'h-12 lg:h-14', lg: 'h-20' };
 
   if (src) {
     return (

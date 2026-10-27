@@ -202,9 +202,10 @@ export default function AdminSettingsPage() {
               <ImageField label="Favicon" value={brand.faviconUrl} onChange={(faviconUrl) => patch('brand', { faviconUrl })} aspect="aspect-square max-w-[120px]" hint="Square PNG, ICO or SVG." />
             </div>
           </Card>
-          <Card title="Colours" description="Pick your brand colour; the whole site follows." className="lg:col-span-2">
-            <div className="grid gap-5 md:grid-cols-4">
-              <ColorInput label="Accent colour" value={theme.accent} onChange={(accent) => patch('theme', { accent })} />
+          <Card title="Colours" description="Brand colours used as controlled accents across the site (buttons, links, badges, highlights)." className="lg:col-span-2">
+            <div className="grid gap-5 md:grid-cols-3 lg:grid-cols-5">
+              <ColorInput label="Primary accent (red)" value={theme.accent} onChange={(accent) => patch('theme', { accent })} />
+              <ColorInput label="Secondary accent (orange)" value={theme.accentSecondary} onChange={(accentSecondary) => patch('theme', { accentSecondary })} />
               <ColorInput label="Accent (soft background)" value={theme.accentSoft} onChange={(accentSoft) => patch('theme', { accentSoft })} />
               <ColorInput label="Surface (light sections)" value={theme.surface} onChange={(surface) => patch('theme', { surface })} />
               <ColorInput label="Sale / discount colour" value={theme.sale} onChange={(sale) => patch('theme', { sale })} />
@@ -411,6 +412,14 @@ export default function AdminSettingsPage() {
                 <Input value={home.blogSubtitle} onChange={(e) => patch('home', { blogSubtitle: e.target.value })} />
               </Field>
             </FormGrid>
+          </Card>
+          <Card title="Scrolling ticker" description="Brand statements that scroll across the home page. One per line; leave empty to show the trust badge titles instead.">
+            <Textarea
+              value={home.marquee.join('\n')}
+              onChange={(e) => patch('home', { marquee: e.target.value.split('\n').map((s) => s.trim()).filter(Boolean).slice(0, 12) })}
+              className="min-h-[140px]"
+              placeholder={'Beyond Furniture. Designed for Living.\nWe create the impossible.'}
+            />
           </Card>
           <Card title="Showcase banner" description="Image + text section after the featured products.">
             <BannerFields banner={home.showcase} onChange={(showcase) => patch('home', { showcase })} />
@@ -651,6 +660,9 @@ export default function AdminSettingsPage() {
                 <Textarea value={commerce.bankDetails} onChange={(e) => patch('commerce', { bankDetails: e.target.value })} />
               </Field>
               <Toggle checked={commerce.orderWhatsappEnabled} onChange={(orderWhatsappEnabled) => patch('commerce', { orderWhatsappEnabled })} label="“Order via WhatsApp” buttons" hint="Uses the WhatsApp number from Contact & social." />
+              <Field label="Label for products without a price" hint="Shown instead of a price when a product's price is 0 (bespoke pieces).">
+                <Input value={commerce.quoteLabel} onChange={(e) => patch('commerce', { quoteLabel: e.target.value })} />
+              </Field>
               <Field label="Checkout note" hint="Shown in the cart, at checkout and on the thank-you page.">
                 <Textarea value={commerce.checkoutNote} onChange={(e) => patch('commerce', { checkoutNote: e.target.value })} className="min-h-[70px]" />
               </Field>
@@ -682,7 +694,15 @@ export default function AdminSettingsPage() {
             <Field label="Keywords" hint="Comma separated.">
               <Input value={seo.keywords} onChange={(e) => patch('seo', { keywords: e.target.value })} />
             </Field>
-            <ImageField label="Social sharing image (Open Graph)" value={seo.ogImage} onChange={(ogImage) => patch('seo', { ogImage })} aspect="aspect-[1200/630] max-w-lg" hint="1200 × 630 px recommended." />
+            <ImageField label="Social sharing image (Open Graph)" value={seo.ogImage} onChange={(ogImage) => patch('seo', { ogImage })} aspect="aspect-[1200/630] max-w-lg" hint="1200 × 630 px recommended. /og-image.jpg is generated from your logo." />
+            <FormGrid>
+              <Field label="Google Analytics measurement ID" hint="Looks like G-XXXXXXXXXX. Leave empty to disable analytics.">
+                <Input value={seo.googleAnalyticsId} onChange={(e) => patch('seo', { googleAnalyticsId: e.target.value.trim() })} placeholder="G-XXXXXXXXXX" />
+              </Field>
+              <Field label="Google Search Console verification" hint="The content value of the google-site-verification meta tag.">
+                <Input value={seo.googleSiteVerification} onChange={(e) => patch('seo', { googleSiteVerification: e.target.value.trim() })} />
+              </Field>
+            </FormGrid>
           </div>
         </Card>
       )}

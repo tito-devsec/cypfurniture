@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { Check, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { ArrowRight, Check, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { gsap } from '@/lib/gsap';
 import { useCart } from '@/lib/cart-store';
 import type { Product } from '@/lib/types';
@@ -26,9 +26,11 @@ export function ProductPurchase({ product }: { product: Product }) {
     return init;
   });
 
+  const onRequest = product.price <= 0; // bespoke / priced per project
   const discount = discountPercent(product.price, product.compareAtPrice);
   const lowStock = commerce.showStock && product.stock > 0 && product.stock <= commerce.lowStockThreshold;
   const madeToOrder = commerce.showStock && product.stock <= 0;
+  const productUrl = `${process.env.NEXT_PUBLIC_SITE_URL || ''}/products/${product.slug}`;
 
   const onAdd = () => {
     add({ productId: product.id, name: product.name, slug: product.slug, price: product.price, image: product.images[0]?.url ?? '', options: selected, stock: product.stock }, qty);
@@ -38,22 +40,24 @@ export function ProductPurchase({ product }: { product: Product }) {
   };
 
   const waText = [
-    `Hello ${brand.siteName}, I would like to order:`,
+    onRequest ? `Hello ${brand.siteName}, I would like a quotation for:` : `Hello ${brand.siteName}, I would like to order:`,
     `• ${product.name}${product.sku ? ` (${product.sku})` : ''}`,
     ...Object.entries(selected).map(([k, v]) => `  ${k}: ${v}`),
-    `  Quantity: ${qty}`,
-    `  Price: ${formatPrice(product.price, commerce)}`,
-    `${process.env.NEXT_PUBLIC_SITE_URL || ''}/products/${product.slug}`,
+    onRequest ? '' : `  Quantity: ${qty}`,
+    onRequest ? '' : `  Price: ${formatPrice(product.price, commerce)}`,
+    productUrl,
   ]
     .filter(Boolean)
     .join('\n');
+  const waLink = contact.whatsapp ? whatsappLink(contact.whatsapp, waText) : null;
 
   return (
     <div>
       <div className="flex flex-wrap items-center gap-2">
         {product.category && <span className="text-[11px] uppercase tracking-[0.2em] text-muted">{product.category.name}</span>}
         {product.isNew && <Badge tone="ink">New</Badge>}
-        {product.isBestSeller && <Badge tone="surface">Best seller</Badge>}
+        {product.isBestSeller && <Badge tone="accent2">Best seller</Badge>}
+        {onRequest && <Badge tone="surface">Bespoke</Badge>}
         {discount && <Badge tone="sale">Save {discount}%</Badge>}
       </div>
       <h1 className="mt-3 text-3xl leading-[1.1] md:text-[2.6rem]">{product.name}</h1>
@@ -105,32 +109,48 @@ export function ProductPurchase({ product }: { product: Product }) {
         </div>
       ))}
 
-      <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-        <div className="flex h-14 w-full items-center justify-between border border-line sm:w-36">
-          <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} className="flex h-full w-12 items-center justify-center hover:bg-surface" aria-label="Decrease quantity">
-            <Minus size={14} />
-          </button>
-          <span className="font-display text-lg">{qty}</span>
-          <button type="button" onClick={() => setQty((q) => Math.min(99, q + 1))} className="flex h-full w-12 items-center justify-center hover:bg-surface" aria-label="Increase quantity">
-            <Plus size={14} />
-          </button>
+      {onRequest ? (
+        <div className="mt-9 flex flex-col gap-3">
+          {waLink && (
+            <Button href={waLink} external variant="whatsapp" size="lg" full icon={<WhatsAppIcon size={18} />} iconPosition="left">
+              {commerce.quoteLabel || 'Request a quote'} on WhatsApp
+            </Button>
+          )}
+          <Button href="/contact" variant={waLink ? 'outline' : 'primary'} size="lg" full icon={<ArrowRight size={15} />}>
+            Request a custom design
+          </Button>
+          <p className="text-[13px] leading-relaxed text-muted">This piece is made to your dimensions, materials and finishes. Tell us about your space and we will prepare a design and quotation.</p>
         </div>
-        <Button ref={btnRef} size="lg" full onClick={onAdd} icon={added ? <Check size={16} /> : <ShoppingBag size={16} />} iconPosition="left" className={cn('sm:flex-1', added && 'bg-accent')}>
-          {added ? 'Added to cart' : 'Add to cart'}
-        </Button>
-      </div>
+      ) : (
+        <>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+            <div className="flex h-14 w-full items-center justify-between border border-line sm:w-36">
+              <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} className="flex h-full w-12 items-center justify-center hover:bg-surface" aria-label="Decrease quantity">
+                <Minus size={14} />
+              </button>
+              <span className="font-display text-lg">{qty}</span>
+              <button type="button" onClick={() => setQty((q) => Math.min(99, q + 1))} className="flex h-full w-12 items-center justify-center hover:bg-surface" aria-label="Increase quantity">
+                <Plus size={14} />
+              </button>
+            </div>
+            <Button ref={btnRef} size="lg" full onClick={onAdd} icon={added ? <Check size={16} /> : <ShoppingBag size={16} />} iconPosition="left" className={cn('sm:flex-1', added && 'bg-accent')}>
+              {added ? 'Added to cart' : 'Add to cart'}
+            </Button>
+          </div>
 
-      {commerce.orderWhatsappEnabled && contact.whatsapp && (
-        <Button href={whatsappLink(contact.whatsapp, waText)} external variant="whatsapp" size="lg" full className="mt-3" icon={<WhatsAppIcon size={18} />} iconPosition="left">
-          Order via WhatsApp
-        </Button>
-      )}
+          {commerce.orderWhatsappEnabled && waLink && (
+            <Button href={waLink} external variant="whatsapp" size="lg" full className="mt-3" icon={<WhatsAppIcon size={18} />} iconPosition="left">
+              Order via WhatsApp
+            </Button>
+          )}
 
-      {commerce.showStock && (
-        <p className={cn('mt-5 flex items-center gap-2 text-[13px]', madeToOrder ? 'text-muted' : lowStock ? 'text-warning' : 'text-success')}>
-          <span className={cn('h-2 w-2 rounded-full', madeToOrder ? 'bg-muted' : lowStock ? 'bg-warning' : 'bg-success')} />
-          {madeToOrder ? 'Made to order · 3–5 weeks' : lowStock ? `Only ${product.stock} left in stock` : 'In stock · ready to ship'}
-        </p>
+          {commerce.showStock && (
+            <p className={cn('mt-5 flex items-center gap-2 text-[13px]', madeToOrder ? 'text-muted' : lowStock ? 'text-warning' : 'text-success')}>
+              <span className={cn('h-2 w-2 rounded-full', madeToOrder ? 'bg-muted' : lowStock ? 'bg-warning' : 'bg-success')} />
+              {madeToOrder ? 'Made to order' : lowStock ? `Only ${product.stock} left in stock` : 'In stock · ready to deliver'}
+            </p>
+          )}
+        </>
       )}
 
       {settings.features.length > 0 && (

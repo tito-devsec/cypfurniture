@@ -265,7 +265,7 @@ export function ProductForm({ product }: { product?: Product }) {
 
         <Card title="Pricing & stock">
           <div className="space-y-5">
-            <Field label={`Price (${commerce.currencyCode})`} required>
+            <Field label={`Price (${commerce.currencyCode})`} required hint={`Enter 0 to show “${commerce.quoteLabel || 'Request a quote'}” instead of a price (bespoke pieces).`}>
               <Input type="number" min={0} step="0.01" value={v.price} onChange={(e) => set('price', e.target.value)} required />
             </Field>
             <Field label="Compare-at price" hint="Shown crossed out to display a discount. Leave empty for none.">

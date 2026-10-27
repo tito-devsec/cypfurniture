@@ -43,7 +43,7 @@ export default async function HomePage() {
 
       <SplitBanner banner={home.showcase} className="pb-20 md:pb-28" />
 
-      {settings.features.length > 0 && <Marquee items={settings.features.map((f) => f.title)} />}
+      {(home.marquee.length > 0 || settings.features.length > 0) && <Marquee items={home.marquee.length ? home.marquee : settings.features.map((f) => f.title)} />}
 
       {newArrivals.items.length > 0 && (
         <section className="container-x py-20 md:py-28">

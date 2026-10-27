@@ -74,7 +74,7 @@ export function CartDrawer() {
               )}
             </p>
             <div className="mt-2 h-[3px] w-full bg-line">
-              <div className="h-full bg-accent transition-[width] duration-700" style={{ width: `${progress}%` }} />
+              <div className="h-full bg-accent-2 transition-[width] duration-700" style={{ width: `${progress}%` }} />
             </div>
           </div>
         )}

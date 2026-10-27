@@ -18,10 +18,12 @@
     "db:reset": "npm run db:reset -w server",
     "db:studio": "npm run db:studio -w server",
     "lint": "npm run lint -w web",
-    "typecheck": "npm run typecheck -w server && npx tsc --noEmit -p web/tsconfig.json"
+    "typecheck": "npm run typecheck -w server && npx tsc --noEmit -p web/tsconfig.json",
+    "brand:assets": "node scripts/generate-brand-assets.mjs"
   },
   "devDependencies": {
-    "concurrently": "^10.0.0"
+    "concurrently": "^10.0.0",
+    "sharp": "^0.35.5"
   },
   "engines": {
     "node": ">=22.12"

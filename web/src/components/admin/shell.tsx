@@ -92,9 +92,13 @@ export function AdminShell({ user, children }: { user: AdminUser; children: Reac
       {open && <button type="button" className="fixed inset-0 z-40 bg-ink/40 lg:hidden" onClick={() => setOpen(false)} aria-label="Close menu" />}
       <aside ref={sidebar} className="fixed inset-y-0 left-0 z-50 flex w-64 -translate-x-full flex-col bg-ink text-white lg:static lg:!translate-x-0">
         <div className="flex h-16 items-center justify-between border-b border-white/10 px-5">
-          <Link href="/admin" className="flex flex-col leading-none">
-            <span className="font-display text-xl tracking-[0.28em]">CYP</span>
-            <span className="mt-1 text-[9px] uppercase tracking-[0.36em] text-white/60">Admin</span>
+          <Link href="/admin" className="flex items-center gap-3 leading-none">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-mark.png" alt="CYP" className="h-9 w-auto" />
+            <span className="flex flex-col">
+              <span className="font-display text-base tracking-[0.2em]">CYP</span>
+              <span className="mt-0.5 text-[9px] uppercase tracking-[0.36em] text-white/60">Admin</span>
+            </span>
           </Link>
           <button type="button" onClick={() => setOpen(false)} className="text-white/70 lg:hidden" aria-label="Close menu">
             <X size={20} />

@@ -180,6 +180,8 @@ export type CommerceSettings = {
   showStock: boolean;
   lowStockThreshold: number;
   minOrderQuantity: number;
+  /** Shown instead of a price when a product's price is 0 */
+  quoteLabel: string;
 };
 
 export type SiteSettings = {
@@ -209,6 +211,7 @@ export type SiteSettings = {
     bestSellersTitle: string;
     blogTitle: string;
     blogSubtitle: string;
+    marquee: string[];
     showcase: Banner;
     banner: Banner;
     testimonials: { enabled: boolean; title: string; subtitle: string; items: Testimonial[] };
@@ -235,9 +238,9 @@ export type SiteSettings = {
     bottomLinks: NavLink[];
   };
   navigation: { showShopAll: boolean; showCategories: boolean; links: NavLink[] };
-  seo: { metaTitle: string; metaDescription: string; keywords: string; ogImage: string };
+  seo: { metaTitle: string; metaDescription: string; keywords: string; ogImage: string; googleAnalyticsId: string; googleSiteVerification: string };
   commerce: CommerceSettings;
-  theme: { accent: string; accentSoft: string; surface: string; sale: string };
+  theme: { accent: string; accentSecondary: string; accentSoft: string; surface: string; sale: string };
 };
 
 export type Stats = {

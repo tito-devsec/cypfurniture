@@ -35,7 +35,7 @@ export function Marquee({ items, className, speed = 60 }: { items: string[]; cla
         {list.map((item, i) => (
           <span key={i} className="flex items-center gap-10 font-display text-lg uppercase tracking-[0.22em] text-ink">
             {item}
-            <span className="h-1.5 w-1.5 rounded-full bg-accent" />
+            <span className="h-1.5 w-1.5 rounded-full bg-accent-2" />
           </span>
         ))}
       </div>

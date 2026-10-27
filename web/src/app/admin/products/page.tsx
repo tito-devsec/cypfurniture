@@ -150,8 +150,14 @@ export default function AdminProductsPage() {
                 </td>
                 <td className="text-muted">{p.category ? `${p.category.parent ? `${p.category.parent.name} › ` : ''}${p.category.name}` : '—'}</td>
                 <td>
-                  <span className="font-medium">{formatPrice(p.price, commerce)}</span>
-                  {p.compareAtPrice ? <s className="ml-1 text-xs text-muted">{formatPrice(p.compareAtPrice, commerce)}</s> : null}
+                  {p.price > 0 ? (
+                    <>
+                      <span className="font-medium">{formatPrice(p.price, commerce)}</span>
+                      {p.compareAtPrice ? <s className="ml-1 text-xs text-muted">{formatPrice(p.compareAtPrice, commerce)}</s> : null}
+                    </>
+                  ) : (
+                    <span className="text-xs uppercase tracking-wider text-muted">On request</span>
+                  )}
                 </td>
                 <td className={cn(p.stock <= commerce.lowStockThreshold && 'text-warning', p.stock === 0 && 'text-danger')}>{p.stock}</td>
                 <td className="text-xs text-muted">{[p.isFeatured && 'Featured', p.isNew && 'New', p.isBestSeller && 'Best seller'].filter(Boolean).join(', ') || '—'}</td>

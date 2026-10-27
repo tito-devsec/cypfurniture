@@ -60,6 +60,10 @@ ordersRouter.post('/', rateLimit({ windowMs: 10 * 60 * 1000, max: 15, keyPrefix:
     include: { images: { orderBy: { sortOrder: 'asc' }, take: 1 } },
   });
   if (products.length !== ids.length) throw new HttpError(400, 'One or more products are no longer available');
+  const onRequest = products.filter((p) => p.price <= 0);
+  if (onRequest.length) {
+    throw new HttpError(400, `${onRequest.map((p) => p.name).join(', ')} ${onRequest.length === 1 ? 'is' : 'are'} priced per project. Please request a quote instead.`);
+  }
   const byId = new Map(products.map((p) => [p.id, p]));
 
   const lines = input.items.map((item) => {

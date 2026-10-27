@@ -1,12 +1,13 @@
 import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 
-type Tone = 'ink' | 'sale' | 'accent' | 'muted' | 'success' | 'warning' | 'danger' | 'surface';
+type Tone = 'ink' | 'sale' | 'accent' | 'accent2' | 'muted' | 'success' | 'warning' | 'danger' | 'surface';
 
 const tones: Record<Tone, string> = {
   ink: 'bg-ink text-white',
   sale: 'bg-sale text-white',
   accent: 'bg-accent text-white',
+  accent2: 'bg-accent-2 text-ink',
   muted: 'bg-surface text-muted',
   surface: 'bg-white text-ink border border-line',
   success: 'bg-success/10 text-success',

@@ -17,6 +17,7 @@
   --color-cream: #faf8f4;
   --color-surface: var(--surface);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
   --color-accent-soft: var(--accent-soft);
   --color-sale: var(--sale);
   --color-whatsapp: #25d366;
@@ -32,11 +33,13 @@
   --shadow-soft: 0 12px 32px -14px rgb(20 20 20 / 0.16);
 }
 
+/* Brand defaults (overridden at runtime from Admin → Settings → Brand & theme) */
 :root {
-  --accent: #1f3d33;
-  --accent-soft: #e7efea;
-  --surface: #f6f4ef;
-  --sale: #b23a2e;
+  --accent: #eb001b; /* CYP red */
+  --accent-2: #f79e1b; /* CYP orange */
+  --accent-soft: #fbe9d3;
+  --surface: #f6efea; /* warm cream */
+  --sale: #eb001b;
 }
 
 @layer base {
