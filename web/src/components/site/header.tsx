@@ -11,6 +11,7 @@ import { cn, resolveImage, whatsappLink } from '@/lib/utils';
 import { WhatsAppIcon } from '@/components/icons';
 import { Collapsible } from '@/components/ui/collapsible';
 import { useHydrated } from '@/lib/use-hydrated';
+import { CurrencyMenu } from './currency-menu';
 import { Logo } from './logo';
 import { useSite } from './site-provider';
 
@@ -167,14 +168,15 @@ export function Header() {
           <Logo />
 
           <div className="flex flex-1 items-center justify-end gap-0.5">
-            {wa && (
-              <a href={wa} target="_blank" rel="noopener noreferrer" className="hidden h-11 w-11 items-center justify-center text-ink transition-colors hover:text-whatsapp md:flex" aria-label="Chat on WhatsApp">
-                <WhatsAppIcon size={21} />
-              </a>
-            )}
             <button type="button" onClick={() => setSearchOpen((v) => !v)} className="flex h-11 w-11 items-center justify-center text-ink transition-colors hover:text-accent lg:hidden" aria-label="Search">
               {searchOpen ? <X size={21} strokeWidth={1.5} /> : <Search size={21} strokeWidth={1.5} />}
             </button>
+            {wa && (
+              <a href={wa} target="_blank" rel="noopener noreferrer" className="hidden h-11 w-11 items-center justify-center text-ink transition-colors hover:text-whatsapp sm:flex" aria-label="Chat on WhatsApp">
+                <WhatsAppIcon size={21} />
+              </a>
+            )}
+            <CurrencyMenu />
             <CartButton className="-mr-2" />
           </div>
         </div>
@@ -187,7 +189,7 @@ export function Header() {
 
         {/* Desktop navigation */}
         <nav className={cn('hidden lg:block transition-[height] duration-500', scrolled ? 'h-11' : 'h-12')} aria-label="Main" onMouseLeave={scheduleClose} onMouseEnter={cancelClose}>
-          <ul className="flex h-full items-center justify-center gap-7 xl:gap-9">
+          <ul className="no-scrollbar flex h-full items-center justify-center-safe gap-4 overflow-x-auto xl:gap-8">
             {items.map((item, i) => {
               const hasChildren = Boolean(item.children && item.children.length > 0);
               const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href + '/'));
@@ -195,7 +197,7 @@ export function Header() {
                 <li key={`${item.href}-${i}`} className="h-full" onMouseEnter={() => (hasChildren ? openMenu(i) : setOpenIndex(null))}>
                   <Link
                     href={item.href}
-                    className={cn('nav-link flex h-full items-center gap-1.5', (isActive || openIndex === i) && 'text-accent')}
+                    className={cn('nav-link flex h-full items-center gap-1.5 whitespace-nowrap text-[12px] tracking-[0.08em] xl:text-[13px] xl:tracking-[0.14em]', (isActive || openIndex === i) && 'text-accent')}
                     aria-expanded={hasChildren ? openIndex === i : undefined}
                   >
                     {item.label}

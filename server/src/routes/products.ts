@@ -136,7 +136,8 @@ productsRouter.get('/', optionalAuth, async (req, res) => {
 
 /** Public price range (for filters). */
 productsRouter.get('/meta/price-range', async (_req, res) => {
-  const agg = await prisma.product.aggregate({ where: { isActive: true }, _min: { price: true }, _max: { price: true } });
+  // Products priced per project (price 0) are left out of the filter range
+  const agg = await prisma.product.aggregate({ where: { isActive: true, price: { gt: 0 } }, _min: { price: true }, _max: { price: true } });
   res.json({ min: agg._min.price ?? 0, max: agg._max.price ?? 0 });
 });
 

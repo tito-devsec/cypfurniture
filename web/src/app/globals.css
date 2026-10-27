@@ -91,7 +91,7 @@
 }
 
 @utility nav-link {
-  @apply font-display text-[13px] uppercase tracking-[0.14em] text-ink transition-colors duration-300 hover:text-accent;
+  @apply font-display uppercase text-ink transition-colors duration-300 hover:text-accent;
 }
 
 /* Animated underline used for text links */
