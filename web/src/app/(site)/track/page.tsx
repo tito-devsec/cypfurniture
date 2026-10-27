@@ -4,16 +4,16 @@ import { useState, type FormEvent } from 'react';
 import { Check, Search } from 'lucide-react';
 import { ApiError, apiFetch } from '@/lib/api';
 import type { Order } from '@/lib/types';
-import { cn, formatDate, formatPrice, statusLabel } from '@/lib/utils';
+import { cn, formatDate, statusLabel } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Field, Input } from '@/components/ui/form';
-import { useCommerce } from '@/components/site/site-provider';
+import { useMoney } from '@/components/site/site-provider';
 
 const STEPS = ['pending', 'confirmed', 'processing', 'shipped', 'delivered'];
 
 export default function TrackOrderPage() {
-  const commerce = useCommerce();
+  const { formatBase } = useMoney();
   const [orderNumber, setOrderNumber] = useState('');
   const [email, setEmail] = useState('');
   const [order, setOrder] = useState<Order | null>(null);
@@ -90,13 +90,13 @@ export default function TrackOrderPage() {
                   <span>
                     {item.quantity} × {item.productName}
                   </span>
-                  <span>{formatPrice(item.unitPrice * item.quantity, commerce)}</span>
+                  <span>{formatBase(item.unitPrice * item.quantity)}</span>
                 </li>
               ))}
             </ul>
             <div className="mt-4 flex justify-between border-t border-line pt-4 font-display text-xl">
               <span>Total</span>
-              <span>{formatPrice(order.total, commerce)}</span>
+              <span>{formatBase(order.total)}</span>
             </div>
           </div>
         )}

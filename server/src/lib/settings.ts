@@ -16,6 +16,10 @@ const hex = (fallback: string) =>
     .regex(/^#[0-9a-fA-F]{6}$/, 'Must be a hex colour like #EB001B')
     .default(fallback);
 
+/// Font choices available in the admin (the storefront bundles exactly these Google Fonts)
+export const HEADING_FONT_KEYS = ['marcellus', 'playfair', 'cormorant', 'dm-serif', 'libre-baskerville', 'montserrat', 'jost'] as const;
+export const BODY_FONT_KEYS = ['jost', 'inter', 'montserrat', 'lato', 'nunito-sans', 'dm-sans', 'source-sans'] as const;
+
 const linkSchema = z.object({ label: text(80), href: text(500), external: z.boolean().default(false) });
 
 const heroSlideSchema = z.object({
@@ -144,8 +148,8 @@ export const settingsSchema = z.object({
     googleSiteVerification: text(120),
   }),
   commerce: z.object({
-    currencyCode: z.string().min(1).max(8).default('USD'),
-    currencySymbol: z.string().max(8).default('$'),
+    currencyCode: z.string().min(1).max(8).default('TZS'),
+    currencySymbol: z.string().max(8).default('TSh'),
     currencyPosition: z.enum(['before', 'after']).default('before'),
     decimals: z.number().int().min(0).max(3).default(0),
     shippingFlatRate: z.number().min(0).default(0),
@@ -161,12 +165,37 @@ export const settingsSchema = z.object({
     /// Label shown instead of a price when a product has no price (price = 0)
     quoteLabel: z.string().max(60).default('Request a quote'),
   }),
+  /// Currency converter shown in the storefront top bar. Rates are "1 base currency = rate".
+  currencies: z.object({
+    enabled: z.boolean().default(true),
+    autoUpdate: z.boolean().default(true),
+    /// ISO date of the last successful rate refresh
+    updatedAt: text(40),
+    /// Base currency the stored rates were fetched for
+    ratesBase: text(8),
+    list: z
+      .array(
+        z.object({
+          code: z.string().trim().toUpperCase().length(3),
+          symbol: z.string().max(8).default(''),
+          label: text(40),
+          rate: z.number().positive().default(1),
+          decimals: z.number().int().min(0).max(3).default(2),
+        }),
+      )
+      .max(40)
+      .default([]),
+  }),
   theme: z.object({
     accent: hex('#EB001B'),
     accentSecondary: hex('#F79E1B'),
     accentSoft: hex('#FBE9D3'),
     surface: hex('#F6EFEA'),
     sale: hex('#EB001B'),
+    headingFont: z.enum(HEADING_FONT_KEYS).default('marcellus'),
+    bodyFont: z.enum(BODY_FONT_KEYS).default('jost'),
+    /// Root font size in px; everything scales with it
+    baseFontSize: z.number().int().min(14).max(20).default(16),
   }),
 });
 
@@ -196,9 +225,9 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     mapEmbedUrl: 'https://www.google.com/maps?q=Kijitonyama,+Dar+es+Salaam,+Tanzania&output=embed',
   },
   social: {
-    tiktok: '',
+    tiktok: 'https://www.tiktok.com/@cyp_furnitures',
     instagram: 'https://www.instagram.com/cyp_furnitures',
-    facebook: '',
+    facebook: 'https://www.facebook.com/cypfurnitures',
     youtube: '',
     pinterest: '',
     x: '',
@@ -389,8 +418,8 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     googleSiteVerification: '',
   },
   commerce: {
-    currencyCode: 'USD',
-    currencySymbol: '$',
+    currencyCode: 'TZS',
+    currencySymbol: 'TSh',
     currencyPosition: 'before',
     decimals: 0,
     shippingFlatRate: 0,
@@ -405,12 +434,38 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     minOrderQuantity: 1,
     quoteLabel: 'Request a quote',
   },
+  currencies: {
+    enabled: true,
+    autoUpdate: true,
+    updatedAt: '',
+    ratesBase: 'TZS',
+    // Approximate starting rates (1 TZS = rate); refreshed automatically from open.er-api.com
+    list: [
+      { code: 'USD', symbol: '$', label: 'US Dollar', rate: 0.000378, decimals: 2 },
+      { code: 'EUR', symbol: '€', label: 'Euro', rate: 0.00034, decimals: 2 },
+      { code: 'GBP', symbol: '£', label: 'British Pound', rate: 0.000285, decimals: 2 },
+      { code: 'AED', symbol: 'AED', label: 'UAE Dirham', rate: 0.00139, decimals: 2 },
+      { code: 'SAR', symbol: 'SAR', label: 'Saudi Riyal', rate: 0.001419, decimals: 2 },
+      { code: 'KES', symbol: 'KSh', label: 'Kenyan Shilling', rate: 0.048974, decimals: 0 },
+      { code: 'UGX', symbol: 'USh', label: 'Ugandan Shilling', rate: 1.60833, decimals: 0 },
+      { code: 'ZAR', symbol: 'R', label: 'South African Rand', rate: 0.006255, decimals: 2 },
+      { code: 'CNY', symbol: '¥', label: 'Chinese Yuan', rate: 0.002529, decimals: 2 },
+      { code: 'INR', symbol: '₹', label: 'Indian Rupee', rate: 0.035846, decimals: 0 },
+      { code: 'JPY', symbol: '¥', label: 'Japanese Yen', rate: 0.059421, decimals: 0 },
+      { code: 'CAD', symbol: 'CA$', label: 'Canadian Dollar', rate: 0.000522, decimals: 2 },
+      { code: 'AUD', symbol: 'A$', label: 'Australian Dollar', rate: 0.000537, decimals: 2 },
+      { code: 'CHF', symbol: 'CHF', label: 'Swiss Franc', rate: 0.000316, decimals: 2 },
+    ],
+  },
   theme: {
     accent: '#EB001B',
     accentSecondary: '#F79E1B',
     accentSoft: '#FBE9D3',
     surface: '#F6EFEA',
     sale: '#EB001B',
+    headingFont: 'marcellus',
+    bodyFont: 'jost',
+    baseFontSize: 16,
   },
 };
 

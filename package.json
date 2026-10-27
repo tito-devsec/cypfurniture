@@ -5,20 +5,22 @@
   "description": "CYP Furniture - storefront (Next.js + GSAP) and API (Node.js + Prisma)",
   "workspaces": [
     "server",
-    "web"
+    "web",
+    "admin"
   ],
   "scripts": {
-    "dev": "concurrently -n api,web -c green,cyan \"npm run dev -w server\" \"npm run dev -w web\"",
+    "dev": "concurrently -n api,web,admin -c green,cyan,magenta \"npm run dev -w server\" \"npm run dev -w web\" \"npm run dev -w admin\"",
     "dev:server": "npm run dev -w server",
     "dev:web": "npm run dev -w web",
-    "build": "npm run build -w web",
-    "start": "concurrently -n api,web -c green,cyan \"npm run start -w server\" \"npm run start -w web\"",
+    "dev:admin": "npm run dev -w admin",
+    "build": "npm run build -w web && npm run build -w admin",
+    "start": "concurrently -n api,web,admin -c green,cyan,magenta \"npm run start -w server\" \"npm run start -w web\" \"npm run start -w admin\"",
     "setup": "npm run setup -w server",
     "db:seed": "npm run db:seed -w server",
     "db:reset": "npm run db:reset -w server",
     "db:studio": "npm run db:studio -w server",
-    "lint": "npm run lint -w web",
-    "typecheck": "npm run typecheck -w server && npx tsc --noEmit -p web/tsconfig.json",
+    "lint": "npm run lint -w web && npm run lint -w admin",
+    "typecheck": "npm run typecheck -w server && npx tsc --noEmit -p web/tsconfig.json && npx tsc --noEmit -p admin/tsconfig.json",
     "brand:assets": "node scripts/generate-brand-assets.mjs"
   },
   "devDependencies": {

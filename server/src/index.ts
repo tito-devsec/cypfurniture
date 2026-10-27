@@ -16,6 +16,7 @@ import { contactRouter } from './routes/contact.ts';
 import { newsletterRouter } from './routes/newsletter.ts';
 import { uploadsRouter, UPLOAD_DIR } from './routes/uploads.ts';
 import { statsRouter } from './routes/stats.ts';
+import { currenciesRouter } from './routes/currencies.ts';
 import { errorHandler, notFound } from './middleware/error.ts';
 import { prisma } from './lib/prisma.ts';
 
@@ -72,6 +73,7 @@ app.use('/api/contact', contactRouter);
 app.use('/api/newsletter', newsletterRouter);
 app.use('/api/uploads', uploadsRouter);
 app.use('/api/stats', statsRouter);
+app.use('/api/currencies', currenciesRouter);
 
 app.use(notFound);
 app.use(errorHandler);

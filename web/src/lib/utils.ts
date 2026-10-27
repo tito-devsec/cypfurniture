@@ -14,12 +14,23 @@ export function resolveImage(url?: string | null, fallback = '/placeholder.svg')
   return url;
 }
 
+/** Cookie that remembers the visitor's display currency (read on the server for the first render). */
+export const CURRENCY_COOKIE = 'cyp_currency';
+
+export type MoneyFormat = { symbol: string; position?: 'before' | 'after'; decimals?: number; code?: string };
+
+/** Formats an amount with a currency symbol. Letter symbols (TSh, AED, KSh) get a space, signs ($, €) do not. */
+export function formatMoney(amount: number, c: MoneyFormat): string {
+  const decimals = c.decimals ?? 0;
+  const n = amount.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+  const symbol = c.symbol || c.code || '';
+  if ((c.position ?? 'before') === 'after') return `${n} ${symbol}`;
+  return /[A-Za-z]/.test(symbol) ? `${symbol} ${n}` : `${symbol}${n}`;
+}
+
+/** Formats an amount in the shop's base currency (admin, orders, emails). */
 export function formatPrice(amount: number, commerce: Pick<CommerceSettings, 'currencySymbol' | 'currencyPosition' | 'decimals'>): string {
-  const n = amount.toLocaleString('en-US', {
-    minimumFractionDigits: commerce.decimals,
-    maximumFractionDigits: commerce.decimals,
-  });
-  return commerce.currencyPosition === 'after' ? `${n} ${commerce.currencySymbol}` : `${commerce.currencySymbol}${n}`;
+  return formatMoney(amount, { symbol: commerce.currencySymbol, position: commerce.currencyPosition, decimals: commerce.decimals });
 }
 
 export function discountPercent(price: number, compareAt?: number | null): number | null {

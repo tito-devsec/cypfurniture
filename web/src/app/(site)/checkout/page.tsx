@@ -9,11 +9,11 @@ import { ApiError, apiFetch } from '@/lib/api';
 import { selectSubtotal, useCart } from '@/lib/cart-store';
 import { useHydrated } from '@/lib/use-hydrated';
 import type { Order } from '@/lib/types';
-import { cn, formatPrice, resolveImage } from '@/lib/utils';
+import { cn, resolveImage } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
 import { Field, Input, Textarea } from '@/components/ui/form';
-import { useSite } from '@/components/site/site-provider';
+import { useMoney, useSite } from '@/components/site/site-provider';
 
 type PaymentMethod = 'cod' | 'bank_transfer' | 'whatsapp';
 
@@ -23,6 +23,7 @@ export default function CheckoutPage() {
   const { commerce, contact } = settings;
   const { items, clear } = useCart();
   const subtotal = useCart(selectSubtotal);
+  const { format, currency, base, isBase } = useMoney();
   const mounted = useHydrated();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -164,24 +165,29 @@ export default function CheckoutPage() {
                     <p className="truncate font-display text-[15px]">{item.name}</p>
                     {Object.keys(item.options).length > 0 && <p className="truncate text-xs text-muted">{Object.values(item.options).join(' · ')}</p>}
                   </div>
-                  <span className="text-sm">{formatPrice(item.price * item.quantity, commerce)}</span>
+                  <span className="text-sm">{format(item.price * item.quantity)}</span>
                 </li>
               ))}
             </ul>
             <dl className="mt-4 space-y-3 border-t border-line pt-4 text-[15px]">
               <div className="flex justify-between">
                 <dt className="text-muted">Subtotal</dt>
-                <dd>{formatPrice(subtotal, commerce)}</dd>
+                <dd>{format(subtotal)}</dd>
               </div>
               <div className="flex justify-between">
                 <dt className="text-muted">Delivery</dt>
-                <dd>{shipping === 0 ? <span className="text-accent">Free</span> : formatPrice(shipping, commerce)}</dd>
+                <dd>{shipping === 0 ? <span className="text-accent">Free</span> : format(shipping)}</dd>
               </div>
               <div className="flex justify-between border-t border-line pt-4 font-display text-xl">
                 <dt>Total</dt>
-                <dd>{formatPrice(total, commerce)}</dd>
+                <dd>{format(total)}</dd>
               </div>
             </dl>
+            {!isBase && (
+              <p className="mt-3 text-xs leading-relaxed text-muted">
+                Shown in {currency} for reference. Your order is placed and paid in {base.code}.
+              </p>
+            )}
             {error && <p className="mt-5 border border-sale/40 bg-sale/5 px-4 py-3 text-sm text-sale">{error}</p>}
             <Button type="submit" full size="lg" className="mt-7" loading={loading} icon={<ArrowRight size={15} />}>
               Place order

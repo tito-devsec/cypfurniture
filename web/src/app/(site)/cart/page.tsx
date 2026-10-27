@@ -5,15 +5,16 @@ import Link from 'next/link';
 import { ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
 import { selectSubtotal, useCart } from '@/lib/cart-store';
 import { useHydrated } from '@/lib/use-hydrated';
-import { formatPrice, resolveImage } from '@/lib/utils';
+import { resolveImage } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
-import { useCommerce } from '@/components/site/site-provider';
+import { useCommerce, useMoney } from '@/components/site/site-provider';
 
 export default function CartPage() {
   const { items, setQuantity, remove, clear } = useCart();
   const subtotal = useCart(selectSubtotal);
   const commerce = useCommerce();
+  const { format } = useMoney();
   const mounted = useHydrated();
 
   const shipping = commerce.freeShippingThreshold > 0 && subtotal >= commerce.freeShippingThreshold ? 0 : commerce.shippingFlatRate;
@@ -53,7 +54,7 @@ export default function CartPage() {
                           .join(' · ')}
                       </p>
                     )}
-                    <p className="mt-1 text-sm text-muted">{formatPrice(item.price, commerce)} each</p>
+                    <p className="mt-1 text-sm text-muted">{format(item.price)} each</p>
                     <div className="mt-4 flex items-center gap-4 sm:hidden">
                       <QtyControl value={item.quantity} onChange={(q) => setQuantity(item.key, q)} />
                       <button type="button" onClick={() => remove(item.key)} className="text-muted hover:text-sale" aria-label="Remove">
@@ -62,7 +63,7 @@ export default function CartPage() {
                     </div>
                   </div>
                   <div className="hidden flex-col items-end gap-3 sm:flex">
-                    <span className="font-display text-lg">{formatPrice(item.price * item.quantity, commerce)}</span>
+                    <span className="font-display text-lg">{format(item.price * item.quantity)}</span>
                     <QtyControl value={item.quantity} onChange={(q) => setQuantity(item.key, q)} />
                     <button type="button" onClick={() => remove(item.key)} className="flex items-center gap-1 text-xs text-muted hover:text-sale">
                       <Trash2 size={13} /> Remove
@@ -87,18 +88,18 @@ export default function CartPage() {
               <dl className="mt-6 space-y-3 text-[15px]">
                 <div className="flex justify-between">
                   <dt className="text-muted">Subtotal</dt>
-                  <dd>{formatPrice(subtotal, commerce)}</dd>
+                  <dd>{format(subtotal)}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-muted">Delivery</dt>
-                  <dd>{shipping === 0 ? <span className="text-accent">Free</span> : formatPrice(shipping, commerce)}</dd>
+                  <dd>{shipping === 0 ? <span className="text-accent">Free</span> : format(shipping)}</dd>
                 </div>
                 {commerce.freeShippingThreshold > 0 && shipping > 0 && (
-                  <p className="text-xs text-muted">Free delivery on orders over {formatPrice(commerce.freeShippingThreshold, commerce)}.</p>
+                  <p className="text-xs text-muted">Free delivery on orders over {format(commerce.freeShippingThreshold)}.</p>
                 )}
                 <div className="flex justify-between border-t border-line pt-4 font-display text-xl">
                   <dt>Total</dt>
-                  <dd>{formatPrice(total, commerce)}</dd>
+                  <dd>{format(total)}</dd>
                 </div>
               </dl>
               <Button href="/checkout" full size="lg" className="mt-7" icon={<ArrowRight size={15} />}>

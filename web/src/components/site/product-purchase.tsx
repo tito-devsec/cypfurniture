@@ -5,16 +5,17 @@ import { ArrowRight, Check, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { gsap } from '@/lib/gsap';
 import { useCart } from '@/lib/cart-store';
 import type { Product } from '@/lib/types';
-import { cn, discountPercent, formatPrice, whatsappLink } from '@/lib/utils';
+import { cn, discountPercent, whatsappLink } from '@/lib/utils';
 import { WhatsAppIcon, FeatureIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Price } from '@/components/ui/price';
-import { useSite } from './site-provider';
+import { useMoney, useSite } from './site-provider';
 
 export function ProductPurchase({ product }: { product: Product }) {
   const { settings } = useSite();
   const { commerce, contact, brand } = settings;
+  const { format } = useMoney();
   const add = useCart((s) => s.add);
   const btnRef = useRef<HTMLButtonElement>(null);
   const [added, setAdded] = useState(false);
@@ -44,7 +45,7 @@ export function ProductPurchase({ product }: { product: Product }) {
     `• ${product.name}${product.sku ? ` (${product.sku})` : ''}`,
     ...Object.entries(selected).map(([k, v]) => `  ${k}: ${v}`),
     onRequest ? '' : `  Quantity: ${qty}`,
-    onRequest ? '' : `  Price: ${formatPrice(product.price, commerce)}`,
+    onRequest ? '' : `  Price: ${format(product.price)}`,
     productUrl,
   ]
     .filter(Boolean)

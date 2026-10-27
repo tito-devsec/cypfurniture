@@ -165,6 +165,16 @@ export type Banner = {
   buttonLink: string;
 };
 
+export type CurrencyOption = { code: string; symbol: string; label: string; rate: number; decimals: number };
+export type CurrencyBase = { code: string; symbol: string; position: 'before' | 'after'; decimals: number };
+/** Response of GET /api/currencies */
+export type CurrencyPayload = { enabled: boolean; base: CurrencyBase; updatedAt: string; list: CurrencyOption[] };
+
+export const HEADING_FONT_KEYS = ['marcellus', 'playfair', 'cormorant', 'dm-serif', 'libre-baskerville', 'montserrat', 'jost'] as const;
+export const BODY_FONT_KEYS = ['jost', 'inter', 'montserrat', 'lato', 'nunito-sans', 'dm-sans', 'source-sans'] as const;
+export type HeadingFont = (typeof HEADING_FONT_KEYS)[number];
+export type BodyFont = (typeof BODY_FONT_KEYS)[number];
+
 export type CommerceSettings = {
   currencyCode: string;
   currencySymbol: string;
@@ -240,7 +250,17 @@ export type SiteSettings = {
   navigation: { showShopAll: boolean; showCategories: boolean; links: NavLink[] };
   seo: { metaTitle: string; metaDescription: string; keywords: string; ogImage: string; googleAnalyticsId: string; googleSiteVerification: string };
   commerce: CommerceSettings;
-  theme: { accent: string; accentSecondary: string; accentSoft: string; surface: string; sale: string };
+  currencies: { enabled: boolean; autoUpdate: boolean; updatedAt: string; ratesBase: string; list: CurrencyOption[] };
+  theme: {
+    accent: string;
+    accentSecondary: string;
+    accentSoft: string;
+    surface: string;
+    sale: string;
+    headingFont: HeadingFont;
+    bodyFont: BodyFont;
+    baseFontSize: number;
+  };
 };
 
 export type Stats = {

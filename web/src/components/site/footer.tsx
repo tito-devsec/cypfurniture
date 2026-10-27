@@ -156,11 +156,6 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
-              <li>
-                <Link href="/admin" className="hover:text-ink">
-                  Admin
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

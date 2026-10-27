@@ -7,15 +7,16 @@ import { ArrowRight, Check } from 'lucide-react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { useSessionValue } from '@/lib/use-hydrated';
 import type { Order } from '@/lib/types';
-import { formatPrice, whatsappLink } from '@/lib/utils';
+import { whatsappLink } from '@/lib/utils';
 import { WhatsAppIcon } from '@/components/icons';
 import { Button } from '@/components/ui/button';
-import { useSite } from '@/components/site/site-provider';
+import { useMoney, useSite } from '@/components/site/site-provider';
 
 function SuccessContent() {
   const sp = useSearchParams();
   const { settings } = useSite();
   const { commerce, contact, brand } = settings;
+  const { formatBase } = useMoney();
   const raw = useSessionValue('cyp_last_order');
   const order = useMemo<Order | null>(() => {
     if (!raw) return null;
@@ -41,7 +42,7 @@ function SuccessContent() {
     ? [
         `Hello ${brand.siteName}, I just placed order ${order.orderNumber}.`,
         ...order.items.map((i) => `• ${i.quantity} × ${i.productName}${Object.keys(i.options).length ? ` (${Object.values(i.options).join(', ')})` : ''}`),
-        `Total: ${formatPrice(order.total, commerce)}`,
+        `Total: ${formatBase(order.total)}`,
         `Name: ${order.customerName}`,
         `Delivery: ${order.address}, ${order.city}, ${order.country}`,
       ].join('\n')
@@ -67,18 +68,18 @@ function SuccessContent() {
                     {item.quantity} × {item.productName}
                     {Object.keys(item.options).length > 0 && <span className="block text-xs text-muted">{Object.values(item.options).join(' · ')}</span>}
                   </span>
-                  <span>{formatPrice(item.unitPrice * item.quantity, commerce)}</span>
+                  <span>{formatBase(item.unitPrice * item.quantity)}</span>
                 </li>
               ))}
             </ul>
             <dl className="mt-3 space-y-2 border-t border-line pt-4 text-[15px]">
               <div className="flex justify-between text-muted">
                 <dt>Delivery</dt>
-                <dd>{order.shipping === 0 ? 'Free' : formatPrice(order.shipping, commerce)}</dd>
+                <dd>{order.shipping === 0 ? 'Free' : formatBase(order.shipping)}</dd>
               </div>
               <div className="flex justify-between font-display text-xl text-ink">
                 <dt>Total</dt>
-                <dd>{formatPrice(order.total, commerce)}</dd>
+                <dd>{formatBase(order.total)}</dd>
               </div>
             </dl>
             <p className="mt-5 text-sm text-muted">

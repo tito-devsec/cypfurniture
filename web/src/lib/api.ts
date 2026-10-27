@@ -1,5 +1,5 @@
 import { cache } from 'react';
-import type { BlogPost, Category, CategoryNode, Page, Paginated, Product, SiteSettings } from './types';
+import type { BlogPost, Category, CategoryNode, CurrencyPayload, Page, Paginated, Product, SiteSettings } from './types';
 import { FALLBACK_SETTINGS } from './fallback-settings';
 
 /** API base url: server components use API_URL, the browser uses NEXT_PUBLIC_API_URL. */
@@ -68,6 +68,15 @@ export const getSettings = cache(async (): Promise<SiteSettings> => {
   } catch (err) {
     console.error('[cyp] Could not load settings from the API:', (err as Error).message);
     return FALLBACK_SETTINGS;
+  }
+});
+
+/** Base currency + conversion rates for the storefront currency selector. */
+export const getCurrencies = cache(async (): Promise<CurrencyPayload | null> => {
+  try {
+    return await apiFetch<CurrencyPayload>('/api/currencies');
+  } catch {
+    return null;
   }
 });
 

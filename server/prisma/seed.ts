@@ -103,8 +103,8 @@ const products: SeedProduct[] = [
   {
     name: 'Aria 3-Seater Sofa',
     category: 'sofas-living-room-furniture',
-    price: 1299,
-    compareAtPrice: 1599,
+    price: 3400000,
+    compareAtPrice: 4200000,
     short: 'A deep-seated three seater with feather-wrapped cushions on a solid hardwood frame.',
     description:
       'Generous proportions, a low profile and feather-wrapped seat cushions make the Aria the kind of sofa you sink into at the end of the day.\n\n- Solid hardwood frame\n- High-resilience foam core wrapped in feather\n- Removable cushion covers\n- Available in a wide choice of fabrics and leathers',
@@ -121,7 +121,7 @@ const products: SeedProduct[] = [
   {
     name: 'Modular Sectional Sofa',
     category: 'sofas-living-room-furniture',
-    price: 2490,
+    price: 6500000,
     short: 'Build your own configuration. Corner, chaise and ottoman modules that connect in seconds.',
     description:
       'A sectional that grows with your home. Each module connects with hidden brackets, so you can rearrange the layout whenever you move or redecorate.\n\n- Modular: add or remove seats at any time\n- Boucle or velvet upholstery\n- Delivered and assembled by our own team',
@@ -141,7 +141,7 @@ const products: SeedProduct[] = [
   {
     name: 'Luna Velvet Loveseat',
     category: 'sofas-living-room-furniture',
-    price: 849,
+    price: 2200000,
     short: 'A compact two seater with curved arms and a soft velvet finish for smaller spaces.',
     description: 'Designed for apartments and reading corners, the Luna brings a soft, rounded silhouette without taking over the room.\n\n- Compact 160 cm width\n- Soft-touch velvet\n- Solid wood legs in natural or black',
     images: [img('1588046130717-0eb0c9a3ba15'), img('1484101403633-562f891dc89a')],
@@ -159,8 +159,8 @@ const products: SeedProduct[] = [
   {
     name: 'Oslo Lounge Armchair',
     category: 'sofas-living-room-furniture',
-    price: 599,
-    compareAtPrice: 699,
+    price: 1550000,
+    compareAtPrice: 1800000,
     short: 'A lounge chair with a bent-wood frame and a cushioned, slightly reclined seat.',
     description: 'The Oslo pairs a sculptural bent-wood frame with a generous cushion that invites you to stay a while. Pair it with the matching ottoman for the ultimate reading corner.',
     images: [img('1567538096630-e0c55bd6374c'), img('1592078615290-033ee584e267')],
@@ -176,7 +176,7 @@ const products: SeedProduct[] = [
   {
     name: 'Bergen Leather Accent Chair',
     category: 'sofas-living-room-furniture',
-    price: 790,
+    price: 2050000,
     short: 'Full-grain leather on a slim powder-coated steel frame.',
     description: 'Thick leather that develops a rich patina over time, stretched over a slim black steel frame. A statement piece that works in living rooms and executive offices alike.',
     images: [img('1506439773649-6e0eb8cfb237'), img('1519947486511-46149fa0a254')],
@@ -192,7 +192,7 @@ const products: SeedProduct[] = [
   {
     name: 'Kaya Coffee Table',
     category: 'coffee-tables-side-tables',
-    price: 540,
+    price: 1400000,
     short: 'Solid wood with a hand-oiled finish and a floating lower shelf.',
     description: 'Crafted from solid wood and finished with natural oil, the Kaya shows the grain in all its honesty. The lower shelf keeps books and remotes within reach.',
     images: [img('1549497538-303791108f95'), img('1556228453-efd6c1ff04f6')],
@@ -206,7 +206,7 @@ const products: SeedProduct[] = [
   {
     name: 'Mesa Marble Side Table',
     category: 'coffee-tables-side-tables',
-    price: 320,
+    price: 830000,
     short: 'A marble top on a slim brass-finish steel base.',
     description: 'Each Mesa top is cut from a single slab of marble, so no two are alike. The slim steel base is powder-coated in a warm brass finish.',
     images: [img('1519710164239-da123dc03ef4'), img('1513694203232-719a280e022f')],
@@ -218,7 +218,7 @@ const products: SeedProduct[] = [
   {
     name: 'Nesting Side Tables (Set of 2)',
     category: 'coffee-tables-side-tables',
-    price: 390,
+    price: 1000000,
     short: 'Two round tables that tuck into each other, in solid wood with a black steel frame.',
     description: 'Pull them apart when guests arrive and nest them away afterwards. A flexible pair for sofas, armchairs and bedsides.',
     images: [img('1556228453-efd6c1ff04f6'), img('1549497538-303791108f95')],
@@ -232,7 +232,7 @@ const products: SeedProduct[] = [
   {
     name: 'Linea TV Showcase',
     category: 'tv-showcases-consoles',
-    price: 890,
+    price: 2300000,
     short: 'A low, 200 cm media unit with push-to-open doors and cable management.',
     description: 'Clean lines and a rich walnut veneer make the Linea a quiet backdrop for your screen. Three push-to-open compartments hide consoles and cables; a rear cut-out keeps wiring tidy.',
     images: [img('1484101403633-562f891dc89a'), img('1615873968403-89e068629265')],
@@ -247,7 +247,7 @@ const products: SeedProduct[] = [
   {
     name: 'Wall TV Showcase with Display Shelves',
     category: 'tv-showcases-consoles',
-    price: 1450,
+    price: 3800000,
     short: 'A full-wall showcase with a TV niche, display shelves, closed storage and integrated lighting.',
     description: 'A complete living room wall in one piece: a TV niche, open display shelves for decor, closed cupboards for clutter and warm LED lighting. Built to the exact width of your wall.',
     images: [img('1615873968403-89e068629265'), img('1600607687920-4e2a09cf159d')],
@@ -263,7 +263,7 @@ const products: SeedProduct[] = [
   {
     name: 'Console Table',
     category: 'tv-showcases-consoles',
-    price: 460,
+    price: 1200000,
     short: 'A slim entrance or hallway console in solid wood with a single drawer.',
     description: 'Slim enough for narrow hallways and entrances, with one drawer for keys and post and a lower shelf for baskets.',
     images: [img('1600607687920-4e2a09cf159d'), img('1595515106969-1ce29566ff1c')],
@@ -277,8 +277,8 @@ const products: SeedProduct[] = [
   {
     name: 'Haven Upholstered Bed',
     category: 'beds-bedroom-furniture',
-    price: 1150,
-    compareAtPrice: 1390,
+    price: 3000000,
+    compareAtPrice: 3600000,
     short: 'A tall, softly padded headboard with a slatted base. Hotel comfort at home.',
     description: 'The Haven wraps a solid wood frame in soft fabric, with a 120 cm headboard that is made for slow mornings. Slats are included; the mattress is sold separately.',
     images: [img('1505693416388-ac5ce068fe85'), img('1616627547584-bf28cee262db'), img('1522771739844-6a9f6d5f14af')],
@@ -294,7 +294,7 @@ const products: SeedProduct[] = [
   {
     name: 'Sora Platform Bed',
     category: 'beds-bedroom-furniture',
-    price: 980,
+    price: 2550000,
     short: 'A floating solid-wood platform bed with integrated nightstands.',
     description: 'Minimal, low and grounded. The Sora platform bed includes two integrated floating nightstands and a recessed base that makes the whole bed appear to hover.',
     images: [img('1617325247661-675ab4b64ae2'), img('1631679706909-1844bbd07221')],
@@ -308,7 +308,7 @@ const products: SeedProduct[] = [
   {
     name: 'Elm Nightstand',
     category: 'beds-bedroom-furniture',
-    price: 260,
+    price: 680000,
     short: 'A two-drawer nightstand in solid wood with soft-close runners.',
     description: 'Compact, solid and quietly beautiful. Two soft-close drawers and a rear cable notch for chargers and lamps.',
     images: [img('1631679706909-1844bbd07221'), img('1616594039964-ae9021a400a0')],
@@ -322,7 +322,7 @@ const products: SeedProduct[] = [
   {
     name: 'Vera 6-Drawer Dresser',
     category: 'beds-bedroom-furniture',
-    price: 740,
+    price: 1900000,
     short: 'A wide six-drawer dresser with fluted wooden fronts and brass handles.',
     description: 'Fluted solid wood drawer fronts catch the light beautifully. Six deep, soft-close drawers offer generous storage for the whole family.',
     images: [img('1567016432779-094069958ea5'), img('1617325247661-675ab4b64ae2')],
@@ -335,7 +335,7 @@ const products: SeedProduct[] = [
   {
     name: 'Atlas Sliding Wardrobe',
     category: 'wardrobes-storage',
-    price: 1680,
+    price: 4400000,
     short: 'A 250 cm sliding-door wardrobe with a mirror panel, soft-close rails and LED lighting.',
     description: 'Two full-height sliding doors, one with a full mirror, glide on soft-close rails. Inside: hanging rails, shelves, drawers and sensor LED lighting. Custom interiors available.',
     images: [img('1522771739844-6a9f6d5f14af'), img('1567016432779-094069958ea5')],
@@ -354,7 +354,7 @@ const products: SeedProduct[] = [
   {
     name: 'Hinged-Door Wardrobe',
     category: 'wardrobes-storage',
-    price: 1290,
+    price: 3350000,
     short: 'A classic four-door wardrobe with shaker-style fronts and a mix of hanging and shelf space.',
     description: 'Four hinged doors with soft-close hinges, two hanging sections, adjustable shelves and three drawers. Available in painted or wood finishes.',
     images: [img('1616627547584-bf28cee262db'), img('1505693416388-ac5ce068fe85')],
@@ -371,7 +371,7 @@ const products: SeedProduct[] = [
   {
     name: 'Shoe & Storage Cabinet',
     category: 'wardrobes-storage',
-    price: 420,
+    price: 1100000,
     short: 'A slim entrance cabinet with tilting shoe compartments and a top drawer.',
     description: 'Keeps the entrance tidy: three tilting compartments for shoes, a drawer for small items and a solid top for keys and decor.',
     images: [img('1595515106969-1ce29566ff1c'), img('1600607687920-4e2a09cf159d')],
@@ -386,7 +386,7 @@ const products: SeedProduct[] = [
   {
     name: 'Harvest Dining Table',
     category: 'dining-tables',
-    price: 1390,
+    price: 3600000,
     short: 'A solid wood table for eight, with a thick top and an extension to seat ten.',
     description: 'Our signature dining table. A thick solid wood top with a soft chamfered edge, trestle legs and a hidden butterfly leaf that extends the table in seconds.',
     images: [img('1533090481720-856c6e3c1fdc'), img('1551298370-9d3d53740c72'), img('1600585154340-be6161a56a0c')],
@@ -403,7 +403,7 @@ const products: SeedProduct[] = [
   {
     name: 'Round Pedestal Dining Table',
     category: 'dining-tables',
-    price: 980,
+    price: 2550000,
     short: 'A 120 cm round table on a sculpted pedestal base. Seats four to six without a leg in the way.',
     description: 'A single sculpted pedestal means everyone gets legroom. Ideal for square dining rooms and open-plan kitchens.',
     images: [img('1617806118233-18e1de247200'), img('1533090481720-856c6e3c1fdc')],
@@ -417,8 +417,8 @@ const products: SeedProduct[] = [
   {
     name: 'Wishbone Dining Chair (Set of 2)',
     category: 'dining-chairs',
-    price: 398,
-    compareAtPrice: 460,
+    price: 1050000,
+    compareAtPrice: 1200000,
     short: 'A classic Y-back chair with a hand-woven cord seat. Sold in pairs.',
     description: 'A timeless silhouette with a steam-bent back and a hand-woven seat. Light, strong and comfortable for long dinners.',
     images: [img('1503602642458-232111445657'), img('1538688525198-9b88f6f53126')],
@@ -432,7 +432,7 @@ const products: SeedProduct[] = [
   {
     name: 'Vienna Upholstered Dining Chair',
     category: 'dining-chairs',
-    price: 189,
+    price: 490000,
     short: 'A curved, fully upholstered dining chair with a solid wood base.',
     description: 'Soft, supportive and easy to clean. The Vienna wraps around you with a curved back and a generously padded seat, perfect for long meals.',
     images: [img('1550254478-ead40cc54513'), img('1558997519-83ea9252edf8')],
@@ -447,8 +447,8 @@ const products: SeedProduct[] = [
   {
     name: 'Executive Desk',
     category: 'desks-workstations',
-    price: 1190,
-    compareAtPrice: 1350,
+    price: 3100000,
+    compareAtPrice: 3500000,
     short: 'A 180 cm executive desk with a solid wood top, a drawer pedestal and hidden cable management.',
     description: 'A desk that sets the tone of an office: a thick solid wood top, a three-drawer pedestal with soft-close runners and a cable tray hidden under the top.',
     images: [img('1593642532842-98d0fd5ebc1a'), img('1524758631624-e2822e304c36')],
@@ -464,7 +464,7 @@ const products: SeedProduct[] = [
   {
     name: 'Workstation Bench (4 seats)',
     category: 'desks-workstations',
-    price: 1890,
+    price: 4900000,
     short: 'A shared bench desk for four with acoustic screens and cable trays.',
     description: 'Four 140 cm workstations on one shared frame, with fabric acoustic screens and a central cable tray. Expandable in blocks of two.',
     images: [img('1524758631624-e2822e304c36'), img('1497366216548-37526070297c')],
@@ -477,7 +477,7 @@ const products: SeedProduct[] = [
   {
     name: 'Ergo Office Chair',
     category: 'office-chairs',
-    price: 690,
+    price: 1800000,
     short: 'A fully adjustable ergonomic chair with lumbar support and a breathable mesh back.',
     description: 'Synchronised tilt, adjustable lumbar support, adjustable armrests, a seat-depth slider and a breathable mesh back keep you supported through long days.',
     images: [img('1595428774223-ef52624120d2'), img('1580480055273-228ff5388ef8')],
@@ -494,7 +494,7 @@ const products: SeedProduct[] = [
   {
     name: 'Studio Task Chair',
     category: 'office-chairs',
-    price: 290,
+    price: 750000,
     short: 'A compact, stylish task chair for home offices and studios.',
     description: 'All the essentials, no bulk: height adjustment, tilt lock and a moulded, fabric-covered shell on a slim five-star base.',
     images: [img('1598300042247-d088f8ab3a91'), img('1595428774223-ef52624120d2')],
@@ -507,7 +507,7 @@ const products: SeedProduct[] = [
   {
     name: 'Archive Bookcase',
     category: 'office-storage-meeting',
-    price: 760,
+    price: 2000000,
     short: 'A 220 cm tall open bookcase in solid wood with a black steel frame.',
     description: 'Five generous wooden shelves on a slim black steel frame. Use it as a room divider, a library wall or a display for your favourite objects.',
     images: [img('1594620302200-9a762244a156'), img('1595526114035-0d45ed16cfbf')],
@@ -521,7 +521,7 @@ const products: SeedProduct[] = [
   {
     name: 'Boardroom Meeting Table',
     category: 'office-storage-meeting',
-    price: 2450,
+    price: 6400000,
     short: 'A 320 cm conference table for twelve with integrated power and data modules.',
     description: 'A 320 cm veneer top on twin steel pedestals, with two flip-up power modules and full under-table cable management.',
     images: [img('1497366754035-f200968a6e72'), img('1497366216548-37526070297c')],

@@ -5,8 +5,8 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import { SlidersHorizontal, X } from 'lucide-react';
 import type { CategoryNode } from '@/lib/types';
-import { cn, formatPrice } from '@/lib/utils';
-import { useCommerce } from './site-provider';
+import { cn } from '@/lib/utils';
+import { useMoney } from './site-provider';
 
 type Props = { categories: CategoryNode[]; activeSlug?: string; priceRange: { min: number; max: number } };
 
@@ -14,7 +14,7 @@ export function ShopFilters({ categories, activeSlug, priceRange }: Props) {
   const router = useRouter();
   const pathname = usePathname();
   const sp = useSearchParams();
-  const commerce = useCommerce();
+  const { format, base } = useMoney();
   const [open, setOpen] = useState(false);
   const [min, setMin] = useState(sp.get('minPrice') ?? '');
   const [max, setMax] = useState(sp.get('maxPrice') ?? '');
@@ -95,7 +95,8 @@ export function ShopFilters({ categories, activeSlug, priceRange }: Props) {
         <form onSubmit={applyPrice}>
           <h3 className={heading}>Price</h3>
           <p className="mb-3 text-xs text-muted">
-            {formatPrice(priceRange.min, commerce)} – {formatPrice(priceRange.max, commerce)}
+            {format(priceRange.min)} – {format(priceRange.max)}
+            <span className="block">Enter amounts in {base.code}</span>
           </p>
           <div className="flex items-center gap-2">
             <input type="number" min={0} inputMode="numeric" placeholder="Min" value={min} onChange={(e) => setMin(e.target.value)} className="h-10 w-full border border-line px-3 text-sm focus:border-ink focus:outline-none" aria-label="Minimum price" />

@@ -7,9 +7,9 @@ import { useEffect, useRef } from 'react';
 import { Minus, Plus, ShoppingBag, Trash2, X } from 'lucide-react';
 import { gsap, useGSAP } from '@/lib/gsap';
 import { selectSubtotal, useCart } from '@/lib/cart-store';
-import { formatPrice, resolveImage } from '@/lib/utils';
+import { resolveImage } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { useCommerce } from './site-provider';
+import { useCommerce, useMoney } from './site-provider';
 
 export function CartDrawer() {
   const root = useRef<HTMLDivElement>(null);
@@ -17,6 +17,7 @@ export function CartDrawer() {
   const { items, isOpen, close, setQuantity, remove } = useCart();
   const subtotal = useCart(selectSubtotal);
   const commerce = useCommerce();
+  const { format } = useMoney();
   const pathname = usePathname();
 
   useGSAP(
@@ -67,7 +68,7 @@ export function CartDrawer() {
             <p className="text-xs text-muted">
               {remaining > 0 ? (
                 <>
-                  Add <span className="text-ink">{formatPrice(remaining, commerce)}</span> more for free delivery
+                  Add <span className="text-ink">{format(remaining)}</span> more for free delivery
                 </>
               ) : (
                 <span className="text-accent">You qualify for free delivery</span>
@@ -122,7 +123,7 @@ export function CartDrawer() {
                           <Plus size={12} />
                         </button>
                       </div>
-                      <span className="font-display text-[15px]">{formatPrice(item.price * item.quantity, commerce)}</span>
+                      <span className="font-display text-[15px]">{format(item.price * item.quantity)}</span>
                     </div>
                   </div>
                 </li>
@@ -135,7 +136,7 @@ export function CartDrawer() {
           <div className="border-t border-line px-6 py-5">
             <div className="flex items-center justify-between">
               <span className="text-sm uppercase tracking-[0.14em] text-muted">Subtotal</span>
-              <span className="font-display text-xl">{formatPrice(subtotal, commerce)}</span>
+              <span className="font-display text-xl">{format(subtotal)}</span>
             </div>
             <p className="mt-1 text-xs text-muted">Delivery calculated at checkout.</p>
             <div className="mt-5 grid grid-cols-2 gap-3">

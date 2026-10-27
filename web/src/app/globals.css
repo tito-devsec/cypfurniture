@@ -5,8 +5,9 @@
    are injected from the admin "Theme" settings in the root layout.
 ------------------------------------------------------------------- */
 @theme inline {
-  --font-display: var(--font-marcellus), Georgia, "Times New Roman", serif;
-  --font-sans: var(--font-jost), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Families are injected on <html> from Admin → Settings → Brand & theme */
+  --font-display: var(--font-display-family, Georgia, "Times New Roman", serif);
+  --font-sans: var(--font-body-family, ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif);
 
   --color-ink: #141414;
   --color-ink-soft: #3d3d3d;

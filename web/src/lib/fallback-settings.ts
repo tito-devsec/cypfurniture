@@ -60,8 +60,8 @@ export const FALLBACK_SETTINGS: SiteSettings = {
   },
   seo: { metaTitle: 'CYP Furniture & Decor®', metaDescription: '', keywords: '', ogImage: '', googleAnalyticsId: '', googleSiteVerification: '' },
   commerce: {
-    currencyCode: 'USD',
-    currencySymbol: '$',
+    currencyCode: 'TZS',
+    currencySymbol: 'TSh',
     currencyPosition: 'before',
     decimals: 0,
     shippingFlatRate: 0,
@@ -76,5 +76,6 @@ export const FALLBACK_SETTINGS: SiteSettings = {
     minOrderQuantity: 1,
     quoteLabel: 'Request a quote',
   },
-  theme: { accent: '#EB001B', accentSecondary: '#F79E1B', accentSoft: '#FBE9D3', surface: '#F6EFEA', sale: '#EB001B' },
+  currencies: { enabled: false, autoUpdate: false, updatedAt: '', ratesBase: 'TZS', list: [] },
+  theme: { accent: '#EB001B', accentSecondary: '#F79E1B', accentSoft: '#FBE9D3', surface: '#F6EFEA', sale: '#EB001B', headingFont: 'marcellus', bodyFont: 'jost', baseFontSize: 16 },
 };
