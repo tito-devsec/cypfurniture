@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useState, type FormEvent } from 'react';
 import { ArrowRight, Clock, Mail, MapPin, Phone } from 'lucide-react';
 import { apiFetch } from '@/lib/api';
+import { mapViewUrl } from '@/lib/maps';
 import { telLink, whatsappLink } from '@/lib/utils';
 import { WhatsAppIcon } from '@/components/icons';
 import { Reveal } from '@/components/ui/reveal';
@@ -104,11 +105,11 @@ export function Footer() {
               {(contact.address || contact.city) && (
                 <li className="flex gap-3">
                   <MapPin size={16} className="mt-1 shrink-0" />
-                  <span>
+                  <a href={mapViewUrl(contact)} target="_blank" rel="noopener noreferrer" title="Open in Google Maps" className="hover:text-ink">
                     {contact.address}
                     {contact.address && (contact.city || contact.country) ? <br /> : null}
                     {[contact.city, contact.country].filter(Boolean).join(', ')}
-                  </span>
+                  </a>
                 </li>
               )}
               {contact.phone && (

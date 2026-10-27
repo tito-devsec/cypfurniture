@@ -206,7 +206,9 @@ export type SiteSettings = {
     city: string;
     country: string;
     workingHours: string;
-    mapEmbedUrl: string;
+    mapPlaceName: string;
+    mapCoordinates: string;
+    mapEmbedOverride: string;
   };
   social: { tiktok: string; instagram: string; facebook: string; youtube: string; pinterest: string; x: string; linkedin: string };
   announcement: { enabled: boolean; text: string; link: string; linkText: string };

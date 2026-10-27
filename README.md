@@ -81,7 +81,7 @@ npm run db:reset
 - Media library.
 - **Settings** – everything customers see:
   - Brand & theme: site name, tagline, logo, dark-logo variant, favicon, wordmark, accent / surface / sale colours, **heading font, text font and base text size** (with live preview).
-  - Contact & social: email, phones, WhatsApp number & pre-filled message, address, opening hours, Google Maps embed, TikTok / Instagram / Facebook / YouTube / Pinterest / X / LinkedIn.
+  - Contact & social: email, phones, WhatsApp number & pre-filled message, address, opening hours, showroom map (Google Maps listing name and coordinates, optional custom embed), TikTok / Instagram / Facebook / YouTube / Pinterest / X / LinkedIn.
   - Announcement bar and hero slides.
   - Home page: trust badges, section titles, showcase & bottom banners, testimonials, newsletter box.
   - About page content, footer columns & links, navigation links.
@@ -99,7 +99,7 @@ npm run brand:assets
 
 This writes `web/public/logo-mark.png` (cropped lettermark used in the header, footer and admin), `web/src/app/icon.png` (favicon), `web/src/app/apple-icon.png` and `web/public/og-image.jpg` (image shown when the site is shared on WhatsApp, Facebook or X). To use a different logo, replace `web/public/logo.png` and run the command again, or upload a logo in Admin → Settings → Brand & theme.
 
-The site also emits structured data (schema.org `LocalBusiness` / `FurnitureStore` on every page, `Product` on product pages), canonical URLs, a sitemap and robots rules.
+The site also emits structured data (schema.org `LocalBusiness` / `FurnitureStore` with the showroom address and map coordinates on every page, `Product` on product pages), canonical URLs, a sitemap and robots rules.
 
 ---
 

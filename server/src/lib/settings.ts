@@ -16,6 +16,30 @@ const hex = (fallback: string) =>
     .regex(/^#[0-9a-fA-F]{6}$/, 'Must be a hex colour like #EB001B')
     .default(fallback);
 
+/** Parses "latitude, longitude" the way Google Maps copies it, e.g. "-6.7819, 39.2399". */
+function parseCoordinates(value: string): { lat: number; lng: number } | null {
+  const parts = value.split(',').map((p) => p.trim());
+  if (parts.length !== 2 || !parts[0] || !parts[1]) return null;
+  const lat = Number(parts[0]);
+  const lng = Number(parts[1]);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng) || Math.abs(lat) > 90 || Math.abs(lng) > 180) return null;
+  return { lat, lng };
+}
+const coordinates = () =>
+  z
+    .string()
+    .trim()
+    .max(80)
+    .refine((v) => v === '' || parseCoordinates(v) !== null, 'Coordinates must be "latitude, longitude", e.g. -6.781925, 39.239961')
+    .default('');
+const httpsUrl = () =>
+  z
+    .string()
+    .trim()
+    .max(2000)
+    .refine((v) => v === '' || v.startsWith('https://'), 'Must be a full https:// address')
+    .default('');
+
 /// Font choices available in the admin (the storefront bundles exactly these Google Fonts)
 export const HEADING_FONT_KEYS = ['marcellus', 'playfair', 'cormorant', 'dm-serif', 'libre-baskerville', 'montserrat', 'jost'] as const;
 export const BODY_FONT_KEYS = ['jost', 'inter', 'montserrat', 'lato', 'nunito-sans', 'dm-sans', 'source-sans'] as const;
@@ -69,7 +93,9 @@ export const settingsSchema = z.object({
     city: text(80),
     country: text(80),
     workingHours: text(200),
-    mapEmbedUrl: url(),
+    mapPlaceName: text(120),
+    mapCoordinates: coordinates(),
+    mapEmbedOverride: httpsUrl(),
   }),
   social: z.object({
     tiktok: url(),
@@ -222,7 +248,10 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     city: 'Dar es Salaam',
     country: 'Tanzania',
     workingHours: '',
-    mapEmbedUrl: 'https://www.google.com/maps?q=Kijitonyama,+Dar+es+Salaam,+Tanzania&output=embed',
+    // Showroom pin: the name of the Google Maps listing and its exact position
+    mapPlaceName: 'CYP Furniture',
+    mapCoordinates: '-6.781925944125291, 39.239961853097746',
+    mapEmbedOverride: '',
   },
   social: {
     tiktok: 'https://www.tiktok.com/@cyp_furnitures',

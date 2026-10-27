@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { RefreshCw, RotateCcw, Save } from 'lucide-react';
+import { ExternalLink, RefreshCw, RotateCcw, Save } from 'lucide-react';
 import { adminApi } from '@/lib/admin-api';
 import { apiFetch } from '@/lib/api';
 import { BODY_FONTS, HEADING_FONTS } from '@/lib/fonts';
 import type { Banner, BodyFont, HeadingFont, NavLink, SiteSettings } from '@/lib/types';
+import { mapEmbedUrl, mapViewUrl, parseCoordinates } from '@/lib/maps';
 import { formatDateTime } from '@/lib/utils';
 import { FEATURE_ICON_NAMES, FeatureIcon } from '@/components/icons';
 import { ImageField } from '@/components/admin/image-field';
@@ -132,6 +133,66 @@ function FontPreview({ heading, body, size }: { heading: HeadingFont; body: Body
         Luxury furniture, bespoke design and interior solutions, handcrafted in Tanzania. Body text, buttons and navigation use this font.
       </p>
     </div>
+  );
+}
+
+/** Accepts the embed address itself or the whole <iframe> code that Google Maps gives you. */
+const embedSrc = (value: string) => value.match(/src="([^"]+)"/)?.[1] ?? value.trim();
+
+function MapPreview({ src }: { src: string }) {
+  // Reload the iframe only once typing pauses
+  const [shown, setShown] = useState(src);
+  useEffect(() => {
+    if (shown === src) return;
+    const timer = setTimeout(() => setShown(src), 800);
+    return () => clearTimeout(timer);
+  }, [src, shown]);
+
+  return (
+    <div className="aspect-[4/3] overflow-hidden rounded-md border border-line bg-canvas">
+      {shown ? (
+        <iframe src={shown} title="Map preview" className="h-full w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" />
+      ) : (
+        <p className="flex h-full items-center justify-center p-6 text-center text-sm text-muted">Add coordinates or an address to show the map.</p>
+      )}
+    </div>
+  );
+}
+
+function ShowroomMapCard({ contact, onChange }: { contact: SiteSettings['contact']; onChange: (patch: Partial<SiteSettings['contact']>) => void }) {
+  const coordsError = contact.mapCoordinates.trim() !== '' && !parseCoordinates(contact.mapCoordinates);
+  const embedError = contact.mapEmbedOverride !== '' && !contact.mapEmbedOverride.startsWith('https://');
+  const viewUrl = mapViewUrl(contact);
+  return (
+    <Card title="Showroom map" description="Drives the map on the contact page, the directions links and the location search engines see." className="lg:col-span-2">
+      <div className="grid gap-6 lg:grid-cols-2">
+        <div className="space-y-5">
+          <Field label="Name on Google Maps" hint="When it matches your Google Maps listing, the map shows the listing card and a labelled pin. Leave empty for a plain pin.">
+            <Input value={contact.mapPlaceName} onChange={(e) => onChange({ mapPlaceName: e.target.value })} placeholder="CYP Furniture" />
+          </Field>
+          <Field
+            label="Coordinates (latitude, longitude)"
+            hint="In Google Maps, right-click the showroom and click the numbers at the top of the menu to copy them."
+            error={coordsError ? 'Use the format latitude, longitude, e.g. -6.781925, 39.239961' : undefined}
+          >
+            <Input value={contact.mapCoordinates} onChange={(e) => onChange({ mapCoordinates: e.target.value })} placeholder="-6.781925944125291, 39.239961853097746" />
+          </Field>
+          <Field
+            label="Custom map embed (optional)"
+            hint="Replaces the generated map. In Google Maps open Share, then Embed a map, copy the HTML and paste it here."
+            error={embedError ? 'Paste the https:// address or the whole iframe code from Google Maps.' : undefined}
+          >
+            <Input value={contact.mapEmbedOverride} onChange={(e) => onChange({ mapEmbedOverride: embedSrc(e.target.value) })} placeholder="https://www.google.com/maps/embed?pb=..." />
+          </Field>
+          {viewUrl && (
+            <a href={viewUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline">
+              Check the pin in Google Maps <ExternalLink size={14} />
+            </a>
+          )}
+        </div>
+        <MapPreview src={mapEmbedUrl(contact)} />
+      </div>
+    </Card>
   );
 }
 
@@ -332,9 +393,6 @@ export default function AdminSettingsPage() {
               <Field label="Opening hours">
                 <Input value={contact.workingHours} onChange={(e) => patch('contact', { workingHours: e.target.value })} />
               </Field>
-              <Field label="Google Maps embed URL" hint="Google Maps → Share → Embed a map → copy the src=&quot;…&quot; value.">
-                <Input value={contact.mapEmbedUrl} onChange={(e) => patch('contact', { mapEmbedUrl: e.target.value })} />
-              </Field>
             </div>
           </Card>
           <Card title="Social media" description="Leave a field empty to hide that icon.">
@@ -362,6 +420,7 @@ export default function AdminSettingsPage() {
               </Field>
             </div>
           </Card>
+          <ShowroomMapCard contact={contact} onChange={(value) => patch('contact', value)} />
         </div>
       )}
 

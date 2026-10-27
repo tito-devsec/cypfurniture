@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { cookies } from 'next/headers';
 import { getCategoryTree, getCurrencies, getSettings } from '@/lib/api';
+import { mapViewUrl, parseCoordinates } from '@/lib/maps';
 import { CURRENCY_COOKIE, resolveImage } from '@/lib/utils';
 import { SiteProvider } from '@/components/site/site-provider';
 import { TopBar } from '@/components/site/top-bar';
@@ -18,6 +19,7 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
 
   // Structured data for search engines (local business + organisation)
   const sameAs = Object.values(social).filter(Boolean);
+  const coords = parseCoordinates(contact.mapCoordinates);
   const logo = brand.logoUrl ? (brand.logoUrl.startsWith('/') && !brand.logoUrl.startsWith('/uploads/') ? `${SITE_URL}${brand.logoUrl}` : resolveImage(brand.logoUrl)) : undefined;
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -34,6 +36,8 @@ export default async function SiteLayout({ children }: { children: ReactNode }) 
       contact.address || contact.city
         ? { '@type': 'PostalAddress', streetAddress: contact.address || undefined, addressLocality: contact.city || undefined, addressCountry: contact.country || undefined }
         : undefined,
+    geo: coords ? { '@type': 'GeoCoordinates', latitude: coords.lat, longitude: coords.lng } : undefined,
+    hasMap: mapViewUrl(contact) || undefined,
     sameAs: sameAs.length ? sameAs : undefined,
   };
 

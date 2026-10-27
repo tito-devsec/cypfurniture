@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 import { getSettings } from '@/lib/api';
+import { mapDirectionsUrl, mapEmbedUrl } from '@/lib/maps';
 import { telLink, whatsappLink } from '@/lib/utils';
 import { WhatsAppIcon } from '@/components/icons';
 import { Breadcrumbs } from '@/components/ui/breadcrumbs';
@@ -14,6 +15,7 @@ export const metadata: Metadata = { title: 'Contact us' };
 export default async function ContactPage() {
   const settings = await getSettings();
   const { contact } = settings;
+  const mapSrc = mapEmbedUrl(contact);
 
   const cards = [
     contact.whatsapp
@@ -26,7 +28,7 @@ export default async function ContactPage() {
           icon: <MapPin size={22} strokeWidth={1.5} />,
           title: 'Showroom',
           text: [contact.address, contact.city, contact.country].filter(Boolean).join(', '),
-          href: `https://www.google.com/maps/search/${encodeURIComponent([contact.address, contact.city, contact.country].filter(Boolean).join(', '))}`,
+          href: mapDirectionsUrl(contact),
           external: true,
           label: 'Get directions',
         }
@@ -78,9 +80,9 @@ export default async function ContactPage() {
               <SocialLinks settings={settings} className="mt-4" />
             </div>
           </div>
-          {contact.mapEmbedUrl && (
+          {mapSrc && (
             <div className="mt-6 aspect-[4/3] overflow-hidden bg-surface">
-              <iframe src={contact.mapEmbedUrl} title="Map" className="h-full w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
+              <iframe src={mapSrc} title={`${contact.mapPlaceName || settings.brand.siteName} on Google Maps`} className="h-full w-full border-0" loading="lazy" referrerPolicy="no-referrer-when-downgrade" allowFullScreen />
             </div>
           )}
         </Reveal>
