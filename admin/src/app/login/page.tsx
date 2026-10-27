@@ -46,9 +46,9 @@ export default function AdminLoginPage() {
     <div className="grid min-h-screen lg:grid-cols-[1.1fr_1fr]">
       <div className="hidden flex-col justify-between bg-brand p-12 text-white lg:flex">
         <div className="flex items-center gap-3">
-          <span className="flex h-11 w-11 items-center justify-center rounded-lg bg-white">
+          <span className="flex h-14 w-14 items-center justify-center rounded-xl bg-white">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo-mark.png" alt="CYP" className="h-7 w-auto" />
+            <img src="/logo-mark.png" alt="CYP Furniture & Decor" className="h-9 w-auto" />
           </span>
           <span className="leading-tight">
             <span className="block font-display text-lg tracking-[0.18em]">CYP</span>

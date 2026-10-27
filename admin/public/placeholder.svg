@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="1000" viewBox="0 0 800 1000">
+  <rect width="800" height="1000" fill="#F1EEE7"/>
+  <g fill="none" stroke="#C9C3B6" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M250 560 V430 a40 40 0 0 1 40 -40 h220 a40 40 0 0 1 40 40 v130"/>
+    <path d="M220 560 h360 v110 h-360 z"/>
+    <path d="M250 670 v60 M550 670 v60"/>
+  </g>
+  <text x="400" y="820" text-anchor="middle" font-family="Georgia, serif" font-size="36" fill="#B5AE9F" letter-spacing="6">CYP FURNITURE</text>
+</svg>

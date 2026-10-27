@@ -97,7 +97,7 @@ The original logo lives at `web/public/logo.png` and is never modified. Derived 
 npm run brand:assets
 ```
 
-This writes `web/public/logo-mark.png` (cropped lettermark used in the header, footer and admin), `web/src/app/icon.png` (favicon), `web/src/app/apple-icon.png` and `web/public/og-image.jpg` (image shown when the site is shared on WhatsApp, Facebook or X). To use a different logo, replace `web/public/logo.png` and run the command again, or upload a logo in Admin → Settings → Brand & theme.
+This writes `web/public/logo-mark.png` (cropped lettermark used in the header, footer and admin), `web/src/app/icon.png` (favicon), `web/src/app/apple-icon.png` and `web/public/og-image.jpg` (image shown when the site is shared on WhatsApp, Facebook or X). The admin is a separate app, so the same command copies the lettermark and icons into `admin/public` and `admin/src/app`. To use a different logo, replace `web/public/logo.png` and run the command again, or upload a logo in Admin → Settings → Brand & theme.
 
 The site also emits structured data (schema.org `LocalBusiness` / `FurnitureStore` with the showroom address and map coordinates on every page, `Product` on product pages), canonical URLs, a sitemap and robots rules.
 

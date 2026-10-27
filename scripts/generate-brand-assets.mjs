@@ -8,7 +8,10 @@
 //         web/src/app/icon.png           (favicon, 512 x 512, transparent)
 //         web/src/app/apple-icon.png     (Apple touch icon, 180 x 180, warm cream background)
 //         web/public/og-image.jpg        (1200 x 630 sharing image for WhatsApp, Facebook, X ...)
+//         admin/public/logo-mark.png, admin/src/app/icon.png, admin/src/app/apple-icon.png
+//                                        (copies for the admin, which is a separate Next.js app)
 
+import { copyFileSync, mkdirSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -20,6 +23,8 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = path.join(root, 'web/public/logo.png');
 const PUBLIC = path.join(root, 'web/public');
 const APP = path.join(root, 'web/src/app');
+const ADMIN_PUBLIC = path.join(root, 'admin/public');
+const ADMIN_APP = path.join(root, 'admin/src/app');
 
 const TRANSPARENT = { r: 0, g: 0, b: 0, alpha: 0 };
 const CREAM = { r: 246, g: 239, b: 234, alpha: 1 }; // #F6EFEA
@@ -64,4 +69,10 @@ await sharp({ create: { width: 1200, height: 630, channels: 4, background: CREAM
   .jpeg({ quality: 90 })
   .toFile(path.join(PUBLIC, 'og-image.jpg'));
 
-console.log('Brand assets written: logo-mark.png, icon.png, apple-icon.png, og-image.jpg');
+// 5. The admin is a separate app with its own public folder and icons
+mkdirSync(ADMIN_PUBLIC, { recursive: true });
+copyFileSync(path.join(PUBLIC, 'logo-mark.png'), path.join(ADMIN_PUBLIC, 'logo-mark.png'));
+copyFileSync(path.join(APP, 'icon.png'), path.join(ADMIN_APP, 'icon.png'));
+copyFileSync(path.join(APP, 'apple-icon.png'), path.join(ADMIN_APP, 'apple-icon.png'));
+
+console.log('Brand assets written: logo-mark.png, icon.png, apple-icon.png, og-image.jpg (web) and logo-mark.png, icon.png, apple-icon.png (admin)');

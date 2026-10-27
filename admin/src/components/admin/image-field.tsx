@@ -90,7 +90,22 @@ export function useUploader() {
 }
 
 /** Single image: preview + upload / library / url / remove. */
-export function ImageField({ value, onChange, label, aspect = 'aspect-video', hint }: { value: string; onChange: (url: string) => void; label?: string; aspect?: string; hint?: string }) {
+/** `fit="contain"` shows the whole image (logos, icons) instead of cropping it to fill the box. */
+export function ImageField({
+  value,
+  onChange,
+  label,
+  aspect = 'aspect-video',
+  hint,
+  fit = 'cover',
+}: {
+  value: string;
+  onChange: (url: string) => void;
+  label?: string;
+  aspect?: string;
+  hint?: string;
+  fit?: 'cover' | 'contain';
+}) {
   const input = useRef<HTMLInputElement>(null);
   const { upload, uploading } = useUploader();
   const [picker, setPicker] = useState(false);
@@ -113,7 +128,7 @@ export function ImageField({ value, onChange, label, aspect = 'aspect-video', hi
       >
         {value ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={resolveImage(value)} alt="" className="h-full w-full object-cover" />
+          <img src={resolveImage(value)} alt="" className={cn('h-full w-full', fit === 'contain' ? 'object-contain p-4' : 'object-cover')} />
         ) : (
           <p className="px-4 text-center text-xs text-muted">Drop an image here or use the buttons below</p>
         )}

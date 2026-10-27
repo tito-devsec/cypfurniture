@@ -7,10 +7,17 @@ export function cn(...inputs: ClassValue[]) {
 
 const PUBLIC_API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
 
-/** Turns API-relative upload paths (/uploads/..) into absolute urls; passes other urls through. */
+/** Public url of the customer website (the admin runs separately). */
+export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+
+/**
+ * Turns API-relative upload paths (/uploads/..) into absolute urls. Other root-relative paths,
+ * such as the default /logo-mark.png and /og-image.jpg, are files in the storefront's public folder.
+ */
 export function resolveImage(url?: string | null, fallback = '/placeholder.svg'): string {
   if (!url) return fallback;
   if (url.startsWith('/uploads/')) return `${PUBLIC_API}${url}`;
+  if (url.startsWith('/') && !url.startsWith('//')) return `${SITE_URL}${url}`;
   return url;
 }
 
@@ -84,8 +91,6 @@ export function statusLabel(status: string): string {
   return status.charAt(0).toUpperCase() + status.slice(1).replace('_', ' ');
 }
 
-/** Public url of the customer website (the admin runs separately). */
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 export function siteUrl(pathname = '/'): string {
   return `${SITE_URL}${pathname}`;
 }

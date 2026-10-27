@@ -199,18 +199,18 @@ export function AdminShell({ user, children }: { user: AdminUser; children: Reac
 
       {/* ------------------------------------------------------------ sidebar */}
       <aside ref={sidebar} className="fixed inset-y-0 left-0 z-50 flex w-[260px] flex-col bg-brand text-white max-lg:[transform:translateX(-100%)] lg:static">
-        <div className="flex h-16 shrink-0 items-center justify-between bg-brand-dark px-5">
+        {/* White logo band, so the red and orange CYP logo keeps its original colours */}
+        <div className="flex h-16 shrink-0 items-center justify-between border-b border-line bg-white px-5 text-ink lg:border-r">
           <Link href="/" className="flex items-center gap-3">
-            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-white">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/logo-mark.png" alt="CYP" className="h-6 w-auto" />
-            </span>
-            <span className="leading-tight">
-              <span className="block font-display text-[15px] tracking-[0.18em]">CYP</span>
-              <span className="block text-[10px] font-medium uppercase tracking-[0.3em] text-white/70">Admin panel</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-mark.png" alt="CYP Furniture & Decor" className="h-10 w-auto" />
+            <span className="border-l border-line pl-3 text-[10px] font-semibold uppercase leading-[1.35] tracking-[0.28em] text-muted">
+              Admin
+              <br />
+              panel
             </span>
           </Link>
-          <button type="button" onClick={() => setOpen(false)} className="text-white/70 hover:text-white lg:hidden" aria-label="Close menu">
+          <button type="button" onClick={() => setOpen(false)} className="text-muted hover:text-ink lg:hidden" aria-label="Close menu">
             <X size={20} />
           </button>
         </div>
@@ -297,7 +297,11 @@ export function AdminShell({ user, children }: { user: AdminUser; children: Reac
           <button type="button" onClick={() => setOpen(true)} className="text-ink lg:hidden" aria-label="Open menu">
             <Menu size={22} />
           </button>
-          <h1 className="text-lg font-semibold tracking-tight">{title}</h1>
+          <Link href="/" className="shrink-0 lg:hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-mark.png" alt="CYP Furniture & Decor" className="h-8 w-auto" />
+          </Link>
+          <h1 className="min-w-0 truncate text-lg font-semibold tracking-tight">{title}</h1>
 
           <form onSubmit={search} role="search" className="ml-2 hidden h-10 w-72 items-center gap-2 rounded-full bg-canvas px-4 md:flex">
             <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search products…" aria-label="Search products" className="w-full bg-transparent text-sm placeholder:text-muted focus:outline-none" />

@@ -306,9 +306,9 @@ export default function AdminSettingsPage() {
           </Card>
           <Card title="Logo & favicon">
             <div className="space-y-6">
-              <ImageField label="Logo" value={brand.logoUrl} onChange={(logoUrl) => patch('brand', { logoUrl })} aspect="aspect-[3/1]" hint="PNG or SVG with transparent background works best." />
-              <ImageField label="Logo on dark backgrounds (optional)" value={brand.logoOnDarkUrl} onChange={(logoOnDarkUrl) => patch('brand', { logoOnDarkUrl })} aspect="aspect-[3/1]" />
-              <ImageField label="Favicon" value={brand.faviconUrl} onChange={(faviconUrl) => patch('brand', { faviconUrl })} aspect="aspect-square max-w-[120px]" hint="Square PNG, ICO or SVG." />
+              <ImageField label="Logo" value={brand.logoUrl} onChange={(logoUrl) => patch('brand', { logoUrl })} aspect="aspect-[3/1]" fit="contain" hint="PNG or SVG with transparent background works best." />
+              <ImageField label="Logo on dark backgrounds (optional)" value={brand.logoOnDarkUrl} onChange={(logoOnDarkUrl) => patch('brand', { logoOnDarkUrl })} aspect="aspect-[3/1]" fit="contain" />
+              <ImageField label="Favicon" value={brand.faviconUrl} onChange={(faviconUrl) => patch('brand', { faviconUrl })} aspect="aspect-square max-w-[120px]" fit="contain" hint="Square PNG, ICO or SVG." />
             </div>
           </Card>
           <Card title="Colours" description="Brand colours used as controlled accents across the site (buttons, links, badges, highlights)." className="lg:col-span-2">
