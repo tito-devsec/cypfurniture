@@ -51,6 +51,7 @@ npm run db:reset
 | `npm run start` | run API + website + admin in production mode (after `npm run build`) |
 | `npm run setup` | `prisma generate` + `prisma db push` + seed |
 | `npm run db:seed` | seed demo data (idempotent) |
+| `npm run db:import-showroom` | add the real CYP showroom products (photos in `web/public/showroom`); skips products that already exist |
 | `npm run db:reset` | drop & recreate the database, then seed |
 | `npm run db:studio` | open Prisma Studio to inspect the database |
 | `npm run typecheck` | TypeScript checks for all workspaces |

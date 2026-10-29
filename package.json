@@ -17,6 +17,7 @@
     "start": "concurrently -n api,web,admin -c green,cyan,magenta \"npm run start -w server\" \"npm run start -w web\" \"npm run start -w admin\"",
     "setup": "npm run setup -w server",
     "db:seed": "npm run db:seed -w server",
+    "db:import-showroom": "npm run db:import-showroom -w server",
     "db:reset": "npm run db:reset -w server",
     "db:studio": "npm run db:studio -w server",
     "lint": "npm run lint -w web && npm run lint -w admin",

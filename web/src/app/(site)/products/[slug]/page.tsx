@@ -80,18 +80,20 @@ export default async function ProductPage({ params }: Props) {
 
   const settings = await getSettings();
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  // Search engines need absolute image urls (photos in /public are stored as /showroom/...)
+  const absoluteUrl = (url: string) => (url.startsWith('/') ? `${siteUrl}${url}` : url);
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Product',
     name: product.name,
     description: product.shortDescription || undefined,
     sku: product.sku || undefined,
-    image: product.images.map((i) => resolveImage(i.url)),
+    image: product.images.map((i) => absoluteUrl(resolveImage(i.url))),
     brand: { '@type': 'Brand', name: settings.brand.siteName },
     category: product.category?.name,
     url: `${siteUrl}/products/${product.slug}`,
     ...(product.price > 0
-      ? { offers: { '@type': 'Offer', price: product.price, priceCurrency: settings.commerce.currencyCode, availability: 'https://schema.org/InStock', url: `${siteUrl}/products/${product.slug}` } }
+      ? { offers: { '@type': 'Offer', price: product.price, priceCurrency: settings.commerce.currencyCode, availability: product.stock > 0 ? 'https://schema.org/InStock' : 'https://schema.org/MadeToOrder', url: `${siteUrl}/products/${product.slug}` } }
       : {}),
   };
 

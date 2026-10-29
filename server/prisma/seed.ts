@@ -4,10 +4,12 @@
 //
 // The products, posts and pages below are placeholders that show the design.
 // Replace them with real CYP products, photos and texts in the admin before launch.
+// Real CYP showroom pieces come from import-showroom.ts, which also runs at the end of this seed.
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { DEFAULT_SETTINGS } from '../src/lib/settings.ts';
+import { importShowroomProducts } from './import-showroom.ts';
 
 const prisma = new PrismaClient();
 
@@ -889,6 +891,9 @@ async function main() {
     for (const page of pages) await prisma.page.create({ data: page });
     console.log(`Created ${pages.length} pages`);
   }
+
+  const showroom = await importShowroomProducts(prisma);
+  if (showroom.created) console.log(`Created ${showroom.created} showroom products`);
 
   console.log('Seed complete.');
 }

@@ -16,6 +16,7 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:seed": "node prisma/seed.ts",
+    "db:import-showroom": "node prisma/import-showroom.ts",
     "db:studio": "prisma studio",
     "db:reset": "prisma db push --force-reset && node prisma/seed.ts",
     "setup": "prisma generate && prisma db push && node prisma/seed.ts"
