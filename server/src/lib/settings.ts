@@ -13,7 +13,7 @@ const url = () => z.string().max(1000).default('');
 const hex = (fallback: string) =>
   z
     .string()
-    .regex(/^#[0-9a-fA-F]{6}$/, 'Must be a hex colour like #EB001B')
+    .regex(/^#[0-9a-fA-F]{6}$/, 'Must be a hex colour like #BE1E2D')
     .default(fallback);
 
 /** Parses "latitude, longitude" the way Google Maps copies it, e.g. "-6.7819, 39.2399". */
@@ -213,11 +213,11 @@ export const settingsSchema = z.object({
       .default([]),
   }),
   theme: z.object({
-    accent: hex('#EB001B'),
-    accentSecondary: hex('#F79E1B'),
-    accentSoft: hex('#FBE9D3'),
+    accent: hex('#BE1E2D'),
+    accentSecondary: hex('#F7941D'),
+    accentSoft: hex('#FDEAD2'),
     surface: hex('#F6EFEA'),
-    sale: hex('#EB001B'),
+    sale: hex('#BE1E2D'),
     headingFont: z.enum(HEADING_FONT_KEYS).default('marcellus'),
     bodyFont: z.enum(BODY_FONT_KEYS).default('jost'),
     /// Root font size in px; everything scales with it
@@ -487,11 +487,12 @@ export const DEFAULT_SETTINGS: SiteSettings = {
     ],
   },
   theme: {
-    accent: '#EB001B',
-    accentSecondary: '#F79E1B',
-    accentSoft: '#FBE9D3',
+    // Official CYP palette: red #BE1E2D, orange #F7941D, cream #F6EFEA (soft tint = 20% orange on white)
+    accent: '#BE1E2D',
+    accentSecondary: '#F7941D',
+    accentSoft: '#FDEAD2',
     surface: '#F6EFEA',
-    sale: '#EB001B',
+    sale: '#BE1E2D',
     headingFont: 'marcellus',
     bodyFont: 'jost',
     baseFontSize: 16,

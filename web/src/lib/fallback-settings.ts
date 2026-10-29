@@ -79,5 +79,5 @@ export const FALLBACK_SETTINGS: SiteSettings = {
     quoteLabel: 'Request a quote',
   },
   currencies: { enabled: false, autoUpdate: false, updatedAt: '', ratesBase: 'TZS', list: [] },
-  theme: { accent: '#EB001B', accentSecondary: '#F79E1B', accentSoft: '#FBE9D3', surface: '#F6EFEA', sale: '#EB001B', headingFont: 'marcellus', bodyFont: 'jost', baseFontSize: 16 },
+  theme: { accent: '#BE1E2D', accentSecondary: '#F7941D', accentSoft: '#FDEAD2', surface: '#F6EFEA', sale: '#BE1E2D', headingFont: 'marcellus', bodyFont: 'jost', baseFontSize: 16 },
 };

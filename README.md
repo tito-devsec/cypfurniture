@@ -12,7 +12,7 @@ A complete website for **CYP FURNITURE & DECOR®** (luxury furniture, bespoke de
 
 Prices are stored in **Tanzanian shillings (TZS)**; visitors can switch the displayed currency (USD, EUR, GBP, AED, SAR, KES, UGX, ZAR, CNY, INR, JPY, CAD, AUD, CHF …) in the top bar. Rates refresh daily from a free exchange-rate service and can be edited in the admin.
 
-Design: minimal, flat, Marcellus + Jost typography, inspired by homeyfad.com (mega menu, hero slider, trust badges, shop-by-room tiles, product grid, blog). Brand colours: CYP red `#EB001B` and orange `#F79E1B` as controlled accents, warm cream `#F6EFEA`, white and charcoal.
+Design: minimal, flat, Marcellus + Jost typography, inspired by homeyfad.com (mega menu, hero slider, trust badges, shop-by-room tiles, product grid, blog). Brand colours (official palette): CYP red `#BE1E2D` and orange `#F7941D` as controlled accents, cream `#F6EFEA`, white and charcoal.
 
 > **Demo content.** The seeded products, prices, blog posts and policy pages are placeholders that show the design. Replace them with real CYP products, photos, prices and texts in the admin before launch. Products without a fixed price can be published with price `0`, which shows "Request a quote" instead of a price.
 
@@ -89,6 +89,16 @@ npm run db:reset
   - Orders & currency: shop currency (TZS by default), the **currency converter list** with manual or daily automatic rates, delivery fee and free-delivery threshold, payment methods, bank details, checkout note, stock display, "Request a quote" label.
   - SEO: default title, description, keywords, sharing image, Google Analytics ID, Google Search Console verification.
 - My account: profile and password.
+
+**Colour palette**
+
+| Colour | HEX | RGB | CMYK | Used for |
+| --- | --- | --- | --- | --- |
+| CYP red | `#BE1E2D` | 190, 30, 45 | 18, 100, 91, 8 | primary accent: buttons, links, sale prices, admin sidebar |
+| CYP orange | `#F7941D` | 247, 148, 29 | 0, 49, 99, 0 | secondary accent and highlights |
+| CYP cream | `#F6EFEA` | 246, 239, 234 | 2, 4, 6, 0 | light sections and backgrounds |
+
+Two tints are derived from it: `#FDEAD2` (20% orange on white) for soft badge backgrounds and `#9C1925` (the red, 18% darker) for hover states in the admin. The website reads its colours from the admin under Settings, Brand & theme, Colours, where **Use CYP palette** restores these values.
 
 **Logo and brand assets**
 

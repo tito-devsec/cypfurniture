@@ -36,11 +36,11 @@
 
 /* Brand defaults (overridden at runtime from Admin → Settings → Brand & theme) */
 :root {
-  --accent: #eb001b; /* CYP red */
-  --accent-2: #f79e1b; /* CYP orange */
-  --accent-soft: #fbe9d3;
-  --surface: #f6efea; /* warm cream */
-  --sale: #eb001b;
+  --accent: #be1e2d; /* CYP red */
+  --accent-2: #f7941d; /* CYP orange */
+  --accent-soft: #fdead2; /* 20% CYP orange on white */
+  --surface: #f6efea; /* CYP cream */
+  --sale: #be1e2d;
 }
 
 @layer base {

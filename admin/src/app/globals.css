@@ -14,14 +14,14 @@
   --color-line-strong: #cfc9be;
   --color-paper: #ffffff;
   --color-cream: #faf8f4;
-  --color-canvas: #f3efea;
+  --color-canvas: #f6efea; /* CYP cream */
   --color-surface: var(--surface);
   --color-accent: var(--accent);
   --color-accent-2: var(--accent-2);
   --color-accent-soft: var(--accent-soft);
   --color-sale: var(--sale);
-  --color-brand: #b5101b;
-  --color-brand-dark: #930c15;
+  --color-brand: #be1e2d; /* CYP red */
+  --color-brand-dark: #9c1925; /* CYP red, 18% darker (hover) */
   --color-whatsapp: #25d366;
   --color-success: #2f7a4f;
   --color-warning: #b7791f;
@@ -37,11 +37,11 @@
 }
 
 :root {
-  --accent: #eb001b;
-  --accent-2: #f79e1b;
-  --accent-soft: #fbe9d3;
+  --accent: #be1e2d;
+  --accent-2: #f7941d;
+  --accent-soft: #fdead2;
   --surface: #f6efea;
-  --sale: #eb001b;
+  --sale: #be1e2d;
 }
 
 @layer base {

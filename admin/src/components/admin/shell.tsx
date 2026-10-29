@@ -284,7 +284,7 @@ export function AdminShell({ user, children }: { user: AdminUser; children: Reac
           <Link href="/orders" className="block rounded-lg bg-white p-4 text-ink shadow-card transition-transform hover:-translate-y-0.5">
             <div className="flex items-end gap-2">
               <span className="text-3xl font-semibold leading-none">{summary ? summary.orders : '–'}</span>
-              {summary && summary.pendingOrders > 0 && <span className="mb-0.5 text-xs font-semibold text-[#c2410c]">{summary.pendingOrders} pending</span>}
+              {summary && summary.pendingOrders > 0 && <span className="mb-0.5 text-xs font-semibold text-brand">{summary.pendingOrders} pending</span>}
             </div>
             <p className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted">Total orders</p>
           </Link>

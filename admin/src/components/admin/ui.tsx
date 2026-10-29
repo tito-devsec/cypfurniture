@@ -151,7 +151,7 @@ export function LoadingBlock() {
 
 type Variant = 'primary' | 'secondary' | 'danger' | 'ghost' | 'accent' | 'dark';
 const variants: Record<Variant, string> = {
-  primary: 'bg-accent text-white shadow-sm hover:bg-brand',
+  primary: 'bg-accent text-white shadow-sm hover:bg-brand-dark',
   accent: 'bg-accent-2 text-ink shadow-sm hover:brightness-95',
   dark: 'bg-ink text-white hover:bg-ink-soft',
   secondary: 'border border-line bg-white text-ink hover:border-line-strong hover:bg-cream',

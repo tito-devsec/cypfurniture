@@ -30,6 +30,9 @@ const TABS: { id: Tab; label: string }[] = [
   { id: 'seo', label: 'SEO' },
 ];
 
+/** Official CYP colour palette (brand guidelines). The soft tint is 20% orange on white. */
+const CYP_PALETTE = { accent: '#BE1E2D', accentSecondary: '#F7941D', accentSoft: '#FDEAD2', surface: '#F6EFEA', sale: '#BE1E2D' };
+
 const newLink = (): NavLink => ({ label: '', href: '/', external: false });
 
 function LinkFields({ link, update }: { link: NavLink; update: (patch: Partial<NavLink>) => void }) {
@@ -311,7 +314,16 @@ export default function AdminSettingsPage() {
               <ImageField label="Favicon" value={brand.faviconUrl} onChange={(faviconUrl) => patch('brand', { faviconUrl })} aspect="aspect-square max-w-[120px]" fit="contain" hint="Square PNG, ICO or SVG." />
             </div>
           </Card>
-          <Card title="Colours" description="Brand colours used as controlled accents across the site (buttons, links, badges, highlights)." className="lg:col-span-2">
+          <Card
+            title="Colours"
+            description="Official CYP palette: red #BE1E2D, orange #F7941D, cream #F6EFEA. Used as controlled accents across the site (buttons, links, badges, highlights)."
+            className="lg:col-span-2"
+            actions={
+              <AdminButton variant="secondary" size="sm" type="button" onClick={() => patch('theme', CYP_PALETTE)}>
+                Use CYP palette
+              </AdminButton>
+            }
+          >
             <div className="grid gap-5 md:grid-cols-3 lg:grid-cols-5">
               <ColorInput label="Primary accent (red)" value={theme.accent} onChange={(accent) => patch('theme', { accent })} />
               <ColorInput label="Secondary accent (orange)" value={theme.accentSecondary} onChange={(accentSecondary) => patch('theme', { accentSecondary })} />
