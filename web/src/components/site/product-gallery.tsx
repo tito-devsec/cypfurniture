@@ -2,13 +2,17 @@
 
 import { Img as Image } from '@/components/ui/img';
 import { useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Rotate3d, X } from 'lucide-react';
 import { gsap, useGSAP } from '@/lib/gsap';
-import type { ProductImage } from '@/lib/types';
+import { has3dView } from '@/lib/model3d';
+import type { Component3D, ProductImage } from '@/lib/types';
+import { Product3D } from '@/components/three/product-3d';
 import { cn, resolveImage } from '@/lib/utils';
 
-export function ProductGallery({ images, name }: { images: ProductImage[]; name: string }) {
+export function ProductGallery({ images, name, model3d = '', components3d = [] }: { images: ProductImage[]; name: string; model3d?: string; components3d?: Component3D[] }) {
   const list = images.length ? images : [{ url: '', alt: name }];
+  const show3d = has3dView(model3d, components3d);
+  const [view, setView] = useState<'photos' | '3d'>('photos');
   const [active, setActive] = useState(0);
   const [lightbox, setLightbox] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -16,10 +20,11 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
 
   useGSAP(
     () => {
-      if (!mainRef.current) return;
-      gsap.fromTo(mainRef.current.querySelector('img'), { opacity: 0, scale: 1.03 }, { opacity: 1, scale: 1, duration: 0.7, ease: 'power3.out' });
+      const img = mainRef.current?.querySelector('img');
+      if (!img) return;
+      gsap.fromTo(img, { opacity: 0, scale: 1.03 }, { opacity: 1, scale: 1, duration: 0.7, ease: 'power3.out' });
     },
-    { dependencies: [active], scope: mainRef },
+    { dependencies: [active, view], scope: mainRef },
   );
 
   useGSAP(
@@ -50,16 +55,29 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
 
   return (
     <div className="flex flex-col gap-4 lg:flex-row-reverse">
-      <div ref={mainRef} className="relative aspect-[4/5] flex-1 cursor-zoom-in overflow-hidden bg-surface" onClick={() => setLightbox(true)}>
-        <Image src={resolveImage(current.url)} alt={current.alt || name} fill priority sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" />
-        {list.length > 1 && (
+      <div ref={mainRef} className={cn('relative flex-1 overflow-hidden bg-surface', view === '3d' ? 'aspect-square' : 'aspect-[4/5] cursor-zoom-in')} onClick={() => view === 'photos' && setLightbox(true)}>
+        {view === '3d' && <Product3D model={model3d} components={components3d} name={name} onClose={() => setView('photos')} className="absolute inset-0" />}
+        {view === 'photos' && show3d && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setView('3d');
+            }}
+            className="absolute left-4 top-4 z-10 inline-flex items-center gap-2 bg-white/95 px-4 py-2.5 text-[11px] font-medium uppercase tracking-[0.16em] text-ink shadow-sm transition-colors hover:bg-ink hover:text-white"
+          >
+            <Rotate3d size={16} strokeWidth={1.8} /> View in 3D
+          </button>
+        )}
+        {view === 'photos' && <Image src={resolveImage(current.url)} alt={current.alt || name} fill priority sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" />}
+        {view === 'photos' && list.length > 1 && (
           <div className="absolute inset-x-0 bottom-4 flex justify-center gap-1.5 lg:hidden">
             {list.map((_, i) => (
               <span key={i} className={cn('h-1.5 w-1.5 rounded-full bg-white/60', i === active && 'bg-white')} />
             ))}
           </div>
         )}
-        {list.length > 1 && (
+        {view === 'photos' && list.length > 1 && (
           <>
             <button
               type="button"
@@ -87,16 +105,33 @@ export function ProductGallery({ images, name }: { images: ProductImage[]; name:
         )}
       </div>
 
-      {list.length > 1 && (
+      {(list.length > 1 || show3d) && (
         <ul className="no-scrollbar flex gap-3 overflow-x-auto lg:w-24 lg:flex-col lg:overflow-visible">
+          {show3d && (
+            <li className="shrink-0">
+              <button
+                type="button"
+                onClick={() => setView('3d')}
+                className={cn('flex h-24 w-20 flex-col items-center justify-center gap-1.5 bg-surface text-ink ring-1 ring-inset transition lg:h-28 lg:w-24', view === '3d' ? 'ring-ink' : 'ring-transparent hover:ring-line-strong')}
+                aria-label="Show the 3D view"
+                aria-current={view === '3d'}
+              >
+                <Rotate3d size={24} strokeWidth={1.4} />
+                <span className="text-[10px] font-medium uppercase tracking-[0.2em]">3D view</span>
+              </button>
+            </li>
+          )}
           {list.map((img, i) => (
             <li key={`${img.url}-${i}`} className="shrink-0">
               <button
                 type="button"
-                onClick={() => setActive(i)}
-                className={cn('relative block h-24 w-20 overflow-hidden bg-surface ring-1 ring-inset transition lg:h-28 lg:w-24', i === active ? 'ring-ink' : 'ring-transparent hover:ring-line-strong')}
+                onClick={() => {
+                  setActive(i);
+                  setView('photos');
+                }}
+                className={cn('relative block h-24 w-20 overflow-hidden bg-surface ring-1 ring-inset transition lg:h-28 lg:w-24', view === 'photos' && i === active ? 'ring-ink' : 'ring-transparent hover:ring-line-strong')}
                 aria-label={`Show image ${i + 1}`}
-                aria-current={i === active}
+                aria-current={view === 'photos' && i === active}
               >
                 <Image src={resolveImage(img.url)} alt={img.alt || name} fill sizes="96px" className="object-cover" />
               </button>

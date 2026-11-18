@@ -28,6 +28,31 @@ export type ProductColor = { name: string; hex: string };
 export type ProductOption = { name: string; values: string[] };
 export type ProductSpec = { label: string; value: string };
 
+/** What a 3D component is made of (drives its icon and the material filter in the 3D viewer). */
+export type MaterialKind = 'fabric' | 'leather' | 'wood' | 'metal' | 'foam' | 'glass' | 'stone' | 'rattan' | 'plastic' | 'other';
+
+/** Which way a component moves when the 3D model splits apart ("auto" works it out from its position). */
+export type ExplodeDirection = 'auto' | 'up' | 'down' | 'left' | 'right' | 'front' | 'back' | 'none';
+
+/** One part of the furniture shown in "View components". */
+export type Component3D = {
+  id: string;
+  name: string;
+  material: MaterialKind;
+  /** e.g. "Velvet, charcoal" or "Solid mahogany" */
+  finish: string;
+  description: string;
+  /** Optional swatch colour (#hex), empty for none */
+  color: string;
+  /** "file" = its own uploaded .glb, "part" = a named part inside the main model */
+  source: 'file' | 'part';
+  part: string;
+  file: string;
+  explode: ExplodeDirection;
+  /** Chosen by the admin: shown on the website or not */
+  visible: boolean;
+};
+
 export type Product = {
   id: number;
   name: string;
@@ -45,6 +70,9 @@ export type Product = {
   colors: ProductColor[];
   options: ProductOption[];
   specs: ProductSpec[];
+  /** Interactive 3D view: assembled model (.glb url), empty for none */
+  model3d: string;
+  components3d: Component3D[];
   tags: string[];
   stock: number;
   isFeatured: boolean;

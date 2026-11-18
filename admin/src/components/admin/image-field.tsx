@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState, type DragEvent } from 'react';
-import { ArrowDown, ArrowUp, FolderOpen, Link2, Trash2, Upload } from 'lucide-react';
+import { ArrowDown, ArrowUp, Box, FolderOpen, Link2, Trash2, Upload } from 'lucide-react';
 import { adminApi } from '@/lib/admin-api';
 import type { UploadedFile } from '@/lib/types';
 import { cn, resolveImage } from '@/lib/utils';
@@ -10,8 +10,8 @@ import { useToast } from './toast';
 import { AdminButton, Input, LoadingBlock, Modal } from './ui';
 
 /** Modal that lists previously uploaded files so they can be reused. */
-export function MediaPicker({ open, onClose, onPick, multiple = false }: { open: boolean; onClose: () => void; onPick: (urls: string[]) => void; multiple?: boolean }) {
-  const { data, loading } = useAdminQuery<{ items: UploadedFile[] }>(open ? '/api/uploads' : null);
+export function MediaPicker({ open, onClose, onPick, multiple = false, kind = 'image' }: { open: boolean; onClose: () => void; onPick: (urls: string[]) => void; multiple?: boolean; kind?: 'image' | 'model' }) {
+  const { data, loading } = useAdminQuery<{ items: UploadedFile[] }>(open ? `/api/uploads?kind=${kind}` : null);
   const [selected, setSelected] = useState<string[]>([]);
 
   const toggle = (url: string) => {
@@ -57,8 +57,15 @@ export function MediaPicker({ open, onClose, onPick, multiple = false }: { open:
         <div className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-6">
           {data.items.map((f) => (
             <button key={f.url} type="button" onClick={() => toggle(f.url)} className={cn('relative aspect-square overflow-hidden rounded-sm border bg-surface', selected.includes(f.url) ? 'border-accent ring-2 ring-accent' : 'border-line hover:border-ink')} title={f.name}>
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={resolveImage(f.url)} alt={f.name} className="h-full w-full object-cover" loading="lazy" />
+              {f.kind === 'model' ? (
+                <span className="flex h-full w-full flex-col items-center justify-center gap-1.5 p-2 text-muted">
+                  <Box size={22} strokeWidth={1.5} />
+                  <span className="line-clamp-2 break-all text-[10px] leading-tight">{f.name}</span>
+                </span>
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={resolveImage(f.url)} alt={f.name} className="h-full w-full object-cover" loading="lazy" />
+              )}
             </button>
           ))}
         </div>

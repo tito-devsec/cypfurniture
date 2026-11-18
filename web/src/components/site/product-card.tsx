@@ -3,6 +3,7 @@
 import { Img as Image } from '@/components/ui/img';
 import Link from 'next/link';
 import { ShoppingBag } from 'lucide-react';
+import { has3dView } from '@/lib/model3d';
 import type { Product } from '@/lib/types';
 import { cn, discountPercent, resolveImage } from '@/lib/utils';
 import { useCart } from '@/lib/cart-store';
@@ -48,6 +49,7 @@ export function ProductCard({ product, priority = false, className }: { product:
           {discount && <Badge tone="sale">-{discount}%</Badge>}
           {product.isNew && <Badge tone="ink">New</Badge>}
           {product.isBestSeller && <Badge tone="accent2">Best seller</Badge>}
+          {has3dView(product.model3d, product.components3d) && <Badge tone="surface">3D view</Badge>}
           {onRequest && <Badge tone="surface">Bespoke</Badge>}
           {outOfStock && <Badge tone="muted">Made to order</Badge>}
         </div>

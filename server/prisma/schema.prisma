@@ -70,6 +70,11 @@ model Product {
   options          String         @default("[]")
   /// JSON array: [{ "label": "Weight", "value": "42 kg" }]
   specs            String         @default("[]")
+  /// Interactive 3D view: url of the assembled model (.glb). Empty = no 3D view.
+  model3d          String         @default("")
+  /// JSON array of 3D components for "View components": name, material, finish, colour, description,
+  /// its own .glb file or a part of the main model, and whether it is shown on the website
+  components3d     String         @default("[]")
   tags             String         @default("")
   stock            Int            @default(10)
   isFeatured       Boolean        @default(false)

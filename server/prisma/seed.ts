@@ -10,6 +10,7 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 import { DEFAULT_SETTINGS } from '../src/lib/settings.ts';
 import { importShowroomProducts } from './import-showroom.ts';
+import { ARIA_3D } from './demo-3d.ts';
 
 const prisma = new PrismaClient();
 
@@ -33,6 +34,8 @@ type SeedProduct = {
   featured?: boolean;
   isNew?: boolean;
   bestSeller?: boolean;
+  model3d?: string;
+  components3d?: Record<string, string | boolean>[];
 };
 
 const categories = [
@@ -116,6 +119,8 @@ const products: SeedProduct[] = [
     colors: fabricColors,
     options: [{ name: 'Size', values: ['2 Seater', '3 Seater', '4 Seater'] }],
     tags: ['sofa', 'living room', 'fabric'],
+    model3d: ARIA_3D.model3d,
+    components3d: ARIA_3D.components3d,
     featured: true,
     bestSeller: true,
     stock: 8,
@@ -849,6 +854,8 @@ async function main() {
           isFeatured: p.featured ?? false,
           isNew: p.isNew ?? false,
           isBestSeller: p.bestSeller ?? false,
+          model3d: p.model3d ?? '',
+          components3d: JSON.stringify(p.components3d ?? []),
           viewCount: Math.floor(Math.random() * 400),
           images: { create: p.images.map((url, i) => ({ url, alt: p.name, sortOrder: i })) },
         },

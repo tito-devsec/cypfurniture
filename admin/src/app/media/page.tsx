@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { Check, Copy, Trash2, Upload } from 'lucide-react';
+import { Box, Check, Copy, Trash2, Upload } from 'lucide-react';
 import { adminApi } from '@/lib/admin-api';
 import type { UploadedFile } from '@/lib/types';
 import { formatDate, resolveImage } from '@/lib/utils';
@@ -73,8 +73,15 @@ export default function AdminMediaPage() {
           {data.items.map((f) => (
             <li key={f.url} className="admin-card overflow-hidden">
               <div className="aspect-square bg-surface">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={resolveImage(f.url)} alt={f.name} className="h-full w-full object-cover" loading="lazy" />
+                {f.kind === 'model' ? (
+                  <div className="flex h-full w-full flex-col items-center justify-center gap-2 text-muted">
+                    <Box size={30} strokeWidth={1.4} />
+                    <span className="text-[11px] font-semibold uppercase tracking-[0.16em]">3D model</span>
+                  </div>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={resolveImage(f.url)} alt={f.name} className="h-full w-full object-cover" loading="lazy" />
+                )}
               </div>
               <div className="p-3">
                 <p className="truncate text-xs" title={f.name}>

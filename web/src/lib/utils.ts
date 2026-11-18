@@ -14,6 +14,11 @@ export function resolveImage(url?: string | null, fallback = '/placeholder.svg')
   return url;
 }
 
+/** Files uploaded through the admin live on the API (/uploads/...); other paths are files of this website. */
+export function resolveAsset(url: string): string {
+  return url.startsWith('/uploads/') ? `${PUBLIC_API}${url}` : url;
+}
+
 /** Cookie that remembers the visitor's display currency (read on the server for the first render). */
 export const CURRENCY_COOKIE = 'cyp_currency';
 

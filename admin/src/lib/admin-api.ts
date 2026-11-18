@@ -59,4 +59,10 @@ export const adminApi = {
     for (const file of Array.from(files)) form.append('files', file);
     return adminFetch<{ files: { url: string; name: string; size: number; type: string }[] }>('/api/uploads', { method: 'POST', body: form });
   },
+  /** 3D models (.glb, up to 60 MB each) */
+  uploadModels: async (files: File[] | FileList) => {
+    const form = new FormData();
+    for (const file of Array.from(files)) form.append('files', file);
+    return adminFetch<{ files: { url: string; name: string; size: number; type: string }[] }>('/api/uploads/models', { method: 'POST', body: form });
+  },
 };

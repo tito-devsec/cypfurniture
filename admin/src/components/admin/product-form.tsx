@@ -4,11 +4,12 @@ import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import { Save } from 'lucide-react';
 import { adminApi } from '@/lib/admin-api';
-import type { Category, Product, ProductColor, ProductOption, ProductSpec } from '@/lib/types';
+import type { Category, Component3D, Product, ProductColor, ProductOption, ProductSpec } from '@/lib/types';
 import { siteUrl, slugify } from '@/lib/utils';
 import { ImageListField, type ImageItem } from './image-field';
 import { ListEditor } from './list-editor';
 import { MarkdownField } from './markdown-field';
+import { Model3DEditor } from './model-3d-editor';
 import { useToast } from './toast';
 import { useAdminQuery, errorMessage } from './use-admin-query';
 import { useSiteSettings } from './use-settings';
@@ -31,6 +32,8 @@ export type ProductFormValues = {
   colors: ProductColor[];
   options: { name: string; values: string }[];
   specs: ProductSpec[];
+  model3d: string;
+  components3d: Component3D[];
   isFeatured: boolean;
   isNew: boolean;
   isBestSeller: boolean;
@@ -55,6 +58,8 @@ export function toFormValues(p?: Product): ProductFormValues {
     colors: p?.colors ?? [],
     options: p?.options.map((o) => ({ name: o.name, values: o.values.join(', ') })) ?? [],
     specs: p?.specs ?? [],
+    model3d: p?.model3d ?? '',
+    components3d: p?.components3d ?? [],
     isFeatured: p?.isFeatured ?? false,
     isNew: p?.isNew ?? false,
     isBestSeller: p?.isBestSeller ?? false,
@@ -83,6 +88,8 @@ function toPayload(v: ProductFormValues) {
     colors: v.colors.filter((c) => c.name.trim()),
     options,
     specs: v.specs.filter((s) => s.label.trim()),
+    model3d: v.model3d.trim(),
+    components3d: v.components3d.map((c) => ({ ...c, name: c.name.trim(), part: c.part.trim(), file: c.file.trim() })),
     isFeatured: v.isFeatured,
     isNew: v.isNew,
     isBestSeller: v.isBestSeller,
@@ -166,6 +173,10 @@ export function ProductForm({ product }: { product?: Product }) {
 
         <Card title="Images" description="Drag to the box, upload from your computer or reuse earlier uploads. The first image is the main one.">
           <ImageListField label="" value={v.images} onChange={(images) => set('images', images)} />
+        </Card>
+
+        <Card title="3D view" description="An interactive 3D model visitors can rotate and zoom, plus a View components mode that splits it into its parts with their materials.">
+          <Model3DEditor model3d={v.model3d} components={v.components3d} name={v.name} onChange={(patch) => setV((s) => ({ ...s, ...patch }))} />
         </Card>
 
         <Card title="Details">

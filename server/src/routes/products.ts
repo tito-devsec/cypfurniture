@@ -29,9 +29,29 @@ export function serializeProduct(p: ProductRow) {
     colors: parseJson<{ name: string; hex: string }[]>(p.colors, []),
     options: parseJson<{ name: string; values: string[] }[]>(p.options, []),
     specs: parseJson<{ label: string; value: string }[]>(p.specs, []),
+    components3d: parseJson<z.infer<typeof component3dInput>[]>(p.components3d, []),
     tags: toList(p.tags),
   };
 }
+
+/** What a 3D component is made of (drives the icon and the material filter on the website). */
+export const MATERIAL_KINDS = ['fabric', 'leather', 'wood', 'metal', 'foam', 'glass', 'stone', 'rattan', 'plastic', 'other'] as const;
+
+const component3dInput = z.object({
+  id: z.string().trim().min(1).max(40),
+  name: z.string().trim().max(80).default(''),
+  material: z.enum(MATERIAL_KINDS).default('other'),
+  finish: z.string().trim().max(120).default(''),
+  description: z.string().max(600).default(''),
+  color: z.string().trim().max(20).default(''),
+  /** "file" = its own uploaded .glb, "part" = a named part inside the main model */
+  source: z.enum(['file', 'part']).default('file'),
+  part: z.string().max(200).default(''),
+  file: z.string().trim().max(1000).default(''),
+  /** Which way it moves when the model splits apart ("auto" works it out from its position) */
+  explode: z.enum(['auto', 'up', 'down', 'left', 'right', 'front', 'back', 'none']).default('auto'),
+  visible: z.boolean().default(true),
+});
 
 const productInput = z.object({
   name: z.string().trim().min(2).max(160),
@@ -48,6 +68,8 @@ const productInput = z.object({
   colors: z.array(z.object({ name: z.string().max(60), hex: z.string().max(20) })).max(30).default([]),
   options: z.array(z.object({ name: z.string().max(60), values: z.array(z.string().max(60)).max(30) })).max(10).default([]),
   specs: z.array(z.object({ label: z.string().max(80), value: z.string().max(300) })).max(40).default([]),
+  model3d: z.string().trim().max(1000).default(''),
+  components3d: z.array(component3dInput).max(40).default([]),
   tags: z.union([z.string(), z.array(z.string())]).default(''),
   stock: z.coerce.number().int().min(0).default(10),
   isFeatured: z.boolean().default(false),
@@ -57,7 +79,7 @@ const productInput = z.object({
 });
 
 function toData(input: z.infer<typeof productInput>) {
-  const { images, slug, tags, colors, options, specs, compareAtPrice, categoryId, ...rest } = input;
+  const { images, slug, tags, colors, options, specs, components3d, compareAtPrice, categoryId, ...rest } = input;
   return {
     ...rest,
     compareAtPrice: compareAtPrice && compareAtPrice > 0 ? compareAtPrice : null,
@@ -66,6 +88,7 @@ function toData(input: z.infer<typeof productInput>) {
     colors: toJson(colors),
     options: toJson(options),
     specs: toJson(specs),
+    components3d: toJson(components3d),
   };
 }
 
@@ -196,6 +219,8 @@ async function updateProduct(req: express.Request, res: express.Response) {
   if (input.colors !== undefined) data.colors = toJson(input.colors);
   if (input.options !== undefined) data.options = toJson(input.options);
   if (input.specs !== undefined) data.specs = toJson(input.specs);
+  if (input.model3d !== undefined) data.model3d = input.model3d;
+  if (input.components3d !== undefined) data.components3d = toJson(input.components3d);
   if (input.tags !== undefined) data.tags = toList(input.tags).join(', ');
   if (input.stock !== undefined) data.stock = input.stock;
   if (input.isFeatured !== undefined) data.isFeatured = input.isFeatured;

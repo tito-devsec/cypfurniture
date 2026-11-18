@@ -23,7 +23,8 @@
     "lint": "npm run lint -w web && npm run lint -w admin",
     "typecheck": "npm run typecheck -w server && npx tsc --noEmit -p web/tsconfig.json && npx tsc --noEmit -p admin/tsconfig.json",
     "brand:assets": "node scripts/generate-brand-assets.mjs",
-    "flags:copy": "node scripts/copy-flags.mjs"
+    "flags:copy": "node scripts/copy-flags.mjs",
+    "draco:copy": "node scripts/copy-draco.mjs"
   },
   "devDependencies": {
     "circle-flags": "^2.8.3",
